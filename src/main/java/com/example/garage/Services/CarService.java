@@ -2,14 +2,15 @@ package com.example.garage.Services;
 
 import com.example.garage.Dtos.Input.CarInputDto;
 import com.example.garage.Dtos.Output.CarOutputDto;
-import com.example.garage.Exceptions.BadRequestException;
+import com.example.garage.Dtos.Output.InvoiceOutputDto;
 import com.example.garage.Exceptions.RecordNotFoundException;
-import com.example.garage.Models.Car;
-import com.example.garage.Models.CarPart;
-import com.example.garage.Models.Carstatus;
-import com.example.garage.Models.Name;
+import com.example.garage.Models.*;
 import com.example.garage.Repositories.CarRepository;
 import com.example.garage.Repositories.CarpartRepository;
+import com.example.garage.Repositories.UserRepository;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,9 +23,11 @@ public class CarService {
 
     private final CarRepository carRepository;
     private final CarpartRepository carpartRepository;
-    public CarService(CarRepository carRepository, CarpartRepository carpartRepository) {
+    private final UserRepository userRepository;
+    public CarService(CarRepository carRepository, CarpartRepository carpartRepository, UserRepository userRepository) {
         this.carRepository = carRepository;
         this.carpartRepository = carpartRepository;
+        this.userRepository = userRepository;
     }
 
     public Iterable<CarOutputDto> getAllCars() {
@@ -53,6 +56,28 @@ public class CarService {
         else {
             return transferCarToDto(car);}
     }
+    public Iterable<CarOutputDto> getAllCarsfromUser() {
+        String currentUserName = new String();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            currentUserName = authentication.getName();
+            Optional<User> currentuser = userRepository.findById(currentUserName);
+            if (currentuser.isPresent()){
+                User user = currentuser.get();
+                ArrayList<CarOutputDto> carOutputDtos = new ArrayList<>();
+                Iterable<Car> allcars = carRepository.findByUser(user);
+                for (Car a: allcars){
+                    CarOutputDto carDto = transferCarToDto(a);
+                    carOutputDtos.add(carDto);
+                }
+                return carOutputDtos;
+            }else {
+                throw new RecordNotFoundException("this users seems to have no values");
+            }
+        }
+        throw new RecordNotFoundException("no User is logged in at the moment");
+    }
+
 
     public long createCar(CarInputDto carInputDto) {
 

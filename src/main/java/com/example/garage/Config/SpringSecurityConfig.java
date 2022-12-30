@@ -61,10 +61,11 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.GET, "/cars").permitAll()
                 .antMatchers(HttpMethod.GET, "/cars/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/cars/licenseplate/{licenseplate}").permitAll()
+                .antMatchers(HttpMethod.GET, "/cars/user").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/cars").hasRole("DESK")
                 .antMatchers(HttpMethod.PUT, "/cars/{id}").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/cars/{id}/Statusdesk").hasRole("DESK")
-                .antMatchers(HttpMethod.PUT, "/cars/{id}/Statusmechanic").hasRole("MECHANIC")
+                .antMatchers(HttpMethod.PUT, "/cars/{id}/statusdesk").hasRole("DESK")
+                .antMatchers(HttpMethod.PUT, "/cars/{id}/statusmechanic").hasRole("MECHANIC")
                 .antMatchers(HttpMethod.DELETE,"/cars/{id}").permitAll()
 
                 //----------------------------------------Endpoints Invoice--------------------------------------

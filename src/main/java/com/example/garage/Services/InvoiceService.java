@@ -58,13 +58,12 @@ public class InvoiceService {
                     InvoiceOutputDto invoiceDto = transferInvoiceToDto(a);
                     invoiceOutputDtos.add(invoiceDto);
             }
-
             return invoiceOutputDtos;
             }else {
-                throw new RecordNotFoundException("error2");
+                throw new RecordNotFoundException("this users seems to have no values");
             }
         }
-        throw new RecordNotFoundException("error");
+        throw new RecordNotFoundException("no User is logged in at the moment");
     }
 
     public long createInvoice(InvoiceInputDto invoiceInputDto) {
