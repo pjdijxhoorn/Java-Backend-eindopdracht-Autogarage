@@ -6,12 +6,12 @@ INSERT INTO cars (id, licenseplate, brand, carstatus)  VALUES (104, '00-OMA-1', 
 INSERT INTO cars (id, licenseplate, brand, carstatus)  VALUES (105, '00-AAA-0', 'Toyota','PICKED_UP');
 INSERT INTO cars (id, licenseplate, brand, carstatus)  VALUES (106, '00-OPA-0', 'Saab', null);
 
-INSERT INTO carparts (id, name, state, checked) VALUES (100, 'TIRES', '3mm profile', false);
-INSERT INTO carparts (id, name, state, checked) VALUES (101, 'BRAKES', 'worn out', false);
-INSERT INTO carparts (id, name, state, checked) VALUES (102, 'STEERING_LINING', 'aligned', false);
-INSERT INTO carparts (id, name, state, checked) VALUES (103, 'LIGHTS', 'breaklight broken', false);
-INSERT INTO carparts (id, name, state, checked) VALUES (104, 'SUSPENSION', 'working fine', false);
-INSERT INTO carparts (id, name, state, checked) VALUES (105, 'SCHOCK_ABSORPTION', 'working fine', false);
+INSERT INTO carparts (id, carpartname, state, checked) VALUES (100, 'TIRES', '3mm profile', false);
+INSERT INTO carparts (id, carpartname, state, checked) VALUES (101, 'BRAKES', 'worn out', false);
+INSERT INTO carparts (id, carpartname, state, checked) VALUES (102, 'STEERING_LINING', 'aligned', false);
+INSERT INTO carparts (id, carpartname, state, checked) VALUES (103, 'LIGHTS', 'breaklight broken', false);
+INSERT INTO carparts (id, carpartname, state, checked) VALUES (104, 'SUSPENSION', 'working fine', false);
+INSERT INTO carparts (id, carpartname, state, checked) VALUES (105, 'SCHOCK_ABSORPTION', 'working fine', false);
 
 INSERT INTO invoices (id, total_cost, payed, repair_date) VALUES (100, 100.0, false, '2020-12-29');
 

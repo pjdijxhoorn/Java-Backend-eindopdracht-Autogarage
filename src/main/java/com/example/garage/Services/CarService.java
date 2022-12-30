@@ -2,7 +2,6 @@ package com.example.garage.Services;
 
 import com.example.garage.Dtos.Input.CarInputDto;
 import com.example.garage.Dtos.Output.CarOutputDto;
-import com.example.garage.Dtos.Output.InvoiceOutputDto;
 import com.example.garage.Exceptions.RecordNotFoundException;
 import com.example.garage.Models.*;
 import com.example.garage.Repositories.CarRepository;
@@ -91,27 +90,27 @@ public class CarService {
             Car newcar = transferDtotoCar(carInputDto);
             Car savedcar = carRepository.save(newcar);
             // voeg onderdelen toe met lege waarden
-            CarPart Tires = new CarPart(Name.TIRES,"",false);
+            CarPart Tires = new CarPart(CarpartName.TIRES,"",false);
             CarPart newTires = carpartRepository.save(Tires);
             newTires.setCar(savedcar);
 
-            CarPart Brakes = new CarPart(Name.BRAKES, "", false);
+            CarPart Brakes = new CarPart(CarpartName.BRAKES, "", false);
             CarPart newBrakes = carpartRepository.save(Brakes);
             newBrakes.setCar(savedcar);
 
-            CarPart steering = new CarPart(Name.STEERING_LINING, "", false);
+            CarPart steering = new CarPart(CarpartName.STEERING_LINING, "", false);
             CarPart newsteering = carpartRepository.save(steering);
             newsteering.setCar(savedcar);
 
-            CarPart Lights = new CarPart(Name.LIGHTS, "", false);
+            CarPart Lights = new CarPart(CarpartName.LIGHTS, "", false);
             CarPart newLights = carpartRepository.save(Lights);
             newLights.setCar(savedcar);
 
-            CarPart Suspension = new CarPart(Name.SUSPENSION, "", false);
+            CarPart Suspension = new CarPart(CarpartName.SUSPENSION, "", false);
             CarPart newSuspension = carpartRepository.save(Suspension);
             newSuspension.setCar(savedcar);
 
-            CarPart schock_absorption = new CarPart(Name.SCHOCK_ABSORPTION, "", false);
+            CarPart schock_absorption = new CarPart(CarpartName.SCHOCK_ABSORPTION, "", false);
             CarPart newschock_absorption = carpartRepository.save(schock_absorption);
             newschock_absorption.setCar(savedcar);
 

@@ -1,5 +1,6 @@
 package com.example.garage.Models;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,36 +8,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="carparts")
-public class CarPart {
+@Table(name="repairs")
+public class Repair {
     //variables.........................................
     @Id
     @GeneratedValue(generator = "ID_GENERATOR")
-    public Long id;
-    @Enumerated(EnumType.STRING)
-    public CarpartName carpartname;
-    public String state;
-    public boolean checked;
+    private Long id;
+    private double repairCost;
+    private String notes;
 
     //relations.........................................
+
     @ManyToOne
     @JsonIgnore
-    private Car car;
+    private CarPart carpart;
 
-    @OneToMany(mappedBy = "carpart")
-    List<Repair> repairs;
-
-    public CarPart(CarpartName carpartname, String state, boolean checked) {
-        this.carpartname = carpartname;
-        this.state = state;
-        this.checked = checked;
-    }
 
 }
