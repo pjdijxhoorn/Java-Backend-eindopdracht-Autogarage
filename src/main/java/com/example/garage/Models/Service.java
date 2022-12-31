@@ -14,31 +14,21 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="carparts")
-public class CarPart {
+@Table(name="services")
+public class Service {
     //variables.........................................
     @Id
     @GeneratedValue(generator = "ID_GENERATOR")
-    public Long id;
-    @Enumerated(EnumType.STRING)
-    public CarpartName carpartname;
-    public String state;
-    public boolean checked;
-
+    private Long id;
     //relations.........................................
+    @OneToMany(mappedBy = "carpart")
+    List<Repair> repairs;
+
     @ManyToOne
     @JsonIgnore
     private Car car;
 
-    @OneToMany(mappedBy = "carpart")
-    List<Repair> repairs;
-
-
-
-    public CarPart(CarpartName carpartname, String state, boolean checked) {
-        this.carpartname = carpartname;
-        this.state = state;
-        this.checked = checked;
-    }
+    @OneToOne(mappedBy = "service")
+    private Invoice invoice;
 
 }

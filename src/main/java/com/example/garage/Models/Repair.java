@@ -29,5 +29,9 @@ public class Repair {
     @JsonIgnore
     private CarPart carpart;
 
+    @ManyToOne
+    @JsonIgnore
+    private Service service;
+
 
 }

@@ -32,6 +32,12 @@ public class Car {
     @OneToMany(mappedBy = "car")
     List<CarPart> carparts;
 
+    @OneToMany(mappedBy = "car")
+    List<Service> services;
+
+    @OneToMany(mappedBy = "car")
+    List<Invoice> invoices;
+
     @ManyToOne
     @JsonIgnore
     private User user;

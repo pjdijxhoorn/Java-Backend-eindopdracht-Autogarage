@@ -35,6 +35,13 @@ public class Invoice {
     @JsonIgnore
     private User user;
 
+    @OneToOne
+    private Service service;
+
+    @ManyToOne
+    @JsonIgnore
+    private Car car;
+
 
 
 
