@@ -76,6 +76,9 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.PUT, "/invoices/{id}/payed").hasRole("DESK")
                 .antMatchers(HttpMethod.PUT, "/invoices/{id}/").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/invoices/{id}").permitAll()
+                //----------------------------------------Endpoints Service--------------------------------------
+
+                //----------------------------------------Endpoints Repair--------------------------------------
 
                 //----------------------------------------Endpoints User--------------------------------------
                 .antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")

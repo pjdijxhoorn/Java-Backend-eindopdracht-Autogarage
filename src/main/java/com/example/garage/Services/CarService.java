@@ -118,10 +118,7 @@ public class CarService {
             return savedcar.getId();
         } else if (car.getLicenseplate().equals( licenseplate)) {
             throw new RecordNotFoundException("This: " + licenseplate + " license-plate is already registered. ");
-
-
-        }
-        else {
+        } else {
             throw new RecordNotFoundException("Something went wrong");
         }
     }
@@ -179,7 +176,7 @@ public class CarService {
             return "Car Removed successfully";}
     }
     private CarOutputDto transferCarToDto(Car car) {
-        CarOutputDto autoDto= new CarOutputDto();
+        CarOutputDto autoDto = new CarOutputDto();
 
         if (car.getLicenseplate() !=null){
             autoDto.setLicenseplate(car.getLicenseplate());

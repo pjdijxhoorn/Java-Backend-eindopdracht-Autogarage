@@ -20,6 +20,7 @@ public class Service {
     @Id
     @GeneratedValue(generator = "ID_GENERATOR")
     private Long id;
+    private boolean repair_approved;
     //relations.........................................
     @OneToMany(mappedBy = "carpart")
     List<Repair> repairs;
