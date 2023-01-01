@@ -25,8 +25,8 @@ public class Invoice {
     private LocalDate repairDate;
 
 
-    private static final double btw = 21.0;
-    private static final double APKCHECK = 30.00;
+    public static final double btw = 21.0;
+    public static final double APKCHECK = 30.00;
 
     //relations.........................................
 

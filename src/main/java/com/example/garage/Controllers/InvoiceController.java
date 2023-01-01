@@ -1,22 +1,17 @@
 package com.example.garage.Controllers;
 
-import com.example.garage.Dtos.Input.CarInputDto;
-import com.example.garage.Dtos.Input.InvoiceInputDto;
-import com.example.garage.Dtos.Output.CarOutputDto;
 import com.example.garage.Dtos.Output.InvoiceOutputDto;
 import com.example.garage.Services.InvoiceService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.net.URI;
-import java.security.Principal;
-
-import static com.example.garage.Utilities.Utilities.getErrorString;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/invoices")
@@ -26,7 +21,6 @@ public class InvoiceController {
     public InvoiceController(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
     }
-
 
     @GetMapping("")
     public ResponseEntity<Iterable<InvoiceOutputDto>> getAllInvoices(){
@@ -41,6 +35,20 @@ public class InvoiceController {
     @GetMapping("/user")
     public ResponseEntity<Iterable<InvoiceOutputDto>> getAllInvoicesfromUser(){
         return ResponseEntity.ok(invoiceService.getAllInvoicesfromUser());
+    }
+
+    @GetMapping("/pdf/generate/{id}")
+    public void generatePDF(@PathVariable long id, HttpServletResponse response) throws IOException {
+
+        response.setContentType("applcation/pdf");
+        DateFormat dateformatter = new SimpleDateFormat("dd-MM-yyyy");
+        String currentDateTime = dateformatter.format(new Date());
+
+        String headerKey = "content-Disposition";
+        String headerValue = "attachment; filename=Invoice_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+
+        this.invoiceService.export(id,response);
     }
 
     @PostMapping("{service_id}")
