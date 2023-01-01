@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 
@@ -22,6 +23,8 @@ public class Repair {
     private Long id;
     private double repairCost;
     private String notes;
+    @Value("${some.key:false}")
+    private boolean repair_done;
 
     //relations.........................................
 
@@ -31,7 +34,7 @@ public class Repair {
 
     @ManyToOne
     @JsonIgnore
-    private Service service;
+    private CarService carservice;
 
 
 }

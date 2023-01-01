@@ -43,31 +43,26 @@ public class InvoiceController {
         return ResponseEntity.ok(invoiceService.getAllInvoicesfromUser());
     }
 
-    @PostMapping("")
-    public ResponseEntity<String> createInvoice(@Valid @RequestBody InvoiceInputDto invoiceInputDto, BindingResult br){
-        if (br.hasErrors()) {
-            String errorString = getErrorString(br);
-            return new ResponseEntity<>(errorString, HttpStatus.BAD_REQUEST);
-
-        } else {
-            long createdId = invoiceService.createInvoice(invoiceInputDto);
+    @PostMapping("{service_id}")
+    public ResponseEntity<String> createInvoice(@PathVariable long service_id){
+            long createdId = invoiceService.createInvoice(service_id);
             URI uri = URI.create(
                     ServletUriComponentsBuilder
                             .fromCurrentContextPath()
-                            .path("/car/" + createdId).toUriString());
+                            .path("/Invoice/" + createdId).toUriString());
             return ResponseEntity.created(uri).body("Invoice created");
         }
-    }
+
 
     @PutMapping("{id}/payed")
     public ResponseEntity<InvoiceOutputDto> updatePayedInvoice(@PathVariable long id, @RequestBody InvoiceOutputDto invoiceOutputDto){
         return ResponseEntity.ok(invoiceService.updatePayedInvoice(id, invoiceOutputDto));
     }
 
-    @PutMapping("{id}")
+    /*@PutMapping("{id}")
     public ResponseEntity<InvoiceOutputDto> updateInvoice(@PathVariable long id, @RequestBody InvoiceOutputDto invoiceOutputDto){
         return ResponseEntity.ok(invoiceService.updateInvoice(id, invoiceOutputDto));
-    }
+    }*/
 
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteInvoice(@PathVariable long id) {

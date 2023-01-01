@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,12 +15,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="services")
-public class Service {
+@Table(name="carservices")
+public class CarService {
     //variables.........................................
     @Id
     @GeneratedValue(generator = "ID_GENERATOR")
     private Long id;
+    @Value("${some.key:false}")
     private boolean repair_approved;
     //relations.........................................
     @OneToMany(mappedBy = "carpart")
@@ -29,7 +31,7 @@ public class Service {
     @JsonIgnore
     private Car car;
 
-    @OneToOne(mappedBy = "service")
+    @OneToOne(mappedBy = "carService")
     private Invoice invoice;
 
 }

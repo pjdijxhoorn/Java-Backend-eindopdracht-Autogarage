@@ -13,9 +13,6 @@ INSERT INTO carparts (id, carpartname, state, checked) VALUES (103, 'LIGHTS', 'b
 INSERT INTO carparts (id, carpartname, state, checked) VALUES (104, 'SUSPENSION', 'working fine', false);
 INSERT INTO carparts (id, carpartname, state, checked) VALUES (105, 'SCHOCK_ABSORPTION', 'working fine', false);
 
-INSERT INTO invoices (id, total_cost, payed, repair_date) VALUES (100, 100.0, false, '2020-12-29');
-
-
 UPDATE carparts SET car_id = 100 WHERE id = 100;
 UPDATE carparts SET car_id = 100 WHERE id = 101;
 UPDATE carparts SET car_id = 100 WHERE id = 102;
@@ -43,4 +40,8 @@ UPDATE cars SET User_username = 'user' WHERE id = 104;
 UPDATE cars SET User_username = 'admin' WHERE id = 105;
 UPDATE cars SET User_username = 'admin' WHERE id = 106;
 
-UPDATE invoices SET User_username = 'admin' WHERE id = 100;
+INSERT INTO carservices(id, repair_approved, car_id)VALUES(100, true ,100);
+INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice_id) VALUES (100, 'worn out tires not enough profile left', 131.0, false, 100, 100);
+--INSERT INTO invoices (id, totalrepaircost, totalcost, payed, repair_date, User_username, car_service_id, car_id) VALUES (1, 70.0, 121.0, false, '2020-12-29', 'admin',100, 100 );
+
+

@@ -33,7 +33,7 @@ public class Car {
     List<CarPart> carparts;
 
     @OneToMany(mappedBy = "car")
-    List<Service> services;
+    List<CarService> carServices;
 
     @OneToMany(mappedBy = "car")
     List<Invoice> invoices;

@@ -4,6 +4,8 @@ import com.example.garage.Dtos.Input.InvoiceInputDto;
 import com.example.garage.Dtos.Output.InvoiceOutputDto;
 import com.example.garage.Exceptions.RecordNotFoundException;
 import com.example.garage.Models.*;
+import com.example.garage.Models.CarService;
+import com.example.garage.Repositories.CarServiceRepository;
 import com.example.garage.Repositories.InvoiceRepository;
 import com.example.garage.Repositories.UserRepository;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -18,10 +20,12 @@ import java.util.Optional;
 public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
     private final UserRepository userRepository;
+    private final CarServiceRepository carServiceRepository;
 
-    public InvoiceService(InvoiceRepository invoiceRepository, UserRepository userRepository) {
+    public InvoiceService(InvoiceRepository invoiceRepository, UserRepository userRepository, CarServiceRepository carServiceRepository) {
         this.invoiceRepository = invoiceRepository;
         this.userRepository = userRepository;
+        this.carServiceRepository = carServiceRepository;
     }
 
     public Iterable<InvoiceOutputDto> getAllInvoices() {
@@ -66,12 +70,25 @@ public class InvoiceService {
         throw new RecordNotFoundException("no User is logged in at the moment");
     }
 
-    public long createInvoice(InvoiceInputDto invoiceInputDto) {
-        Invoice newInvoice = new Invoice();
-        newInvoice = transferDtotoInvoice(invoiceInputDto);
-        newInvoice.setRepairDate(java.time.LocalDate.now());
-        Invoice savedInvoice = invoiceRepository.save(newInvoice);
-        return savedInvoice.getId();
+    public long createInvoice(long service_id) {
+        Optional<CarService> optionalcarservice = carServiceRepository.findById(service_id);
+        if (optionalcarservice.isEmpty()){
+            throw new RecordNotFoundException("no carservice found with this id "+ service_id);
+        }
+        else {
+            CarService carService = optionalcarservice.get();
+            Invoice newInvoice = new Invoice();
+            newInvoice.setCarService(carService);
+            newInvoice.setPayed(false);
+            newInvoice.setUser(carService.getCar().getUser());
+            newInvoice.setRepairDate(java.time.LocalDate.now());
+            newInvoice.setCar(carService.getCar());
+            newInvoice.setTotalrepaircost(newInvoice.calculateRepairCost());
+            newInvoice.setTotalcost(newInvoice.calculateTotalCost());
+
+            Invoice savedInvoice = invoiceRepository.save(newInvoice);
+
+            return savedInvoice.getId();}
     }
 
     public InvoiceOutputDto updatePayedInvoice (long id, InvoiceOutputDto invoiceOutputDto){
@@ -81,24 +98,25 @@ public class InvoiceService {
         }else {
             Invoice updatedInvoice = optionalinvoice.get();
             updatedInvoice.setPayed(invoiceOutputDto.isPayed());
-            return transferInvoiceToDto(updatedInvoice);
+            Invoice savedInvoice = invoiceRepository.save(updatedInvoice);
+            return transferInvoiceToDto(savedInvoice);
         }
     }
 
-    public InvoiceOutputDto updateInvoice (long id, InvoiceOutputDto invoiceOutputDto){
+   /* public InvoiceOutputDto updateInvoice (long id, InvoiceOutputDto invoiceOutputDto){
         Optional<Invoice> optionalinvoice = invoiceRepository.findById(id);
         if (optionalinvoice.isEmpty()){
             throw new RecordNotFoundException("no Invoice with id: " + id );
         }else {
             Invoice updatedInvoice = optionalinvoice.get();
             updatedInvoice.setPayed(invoiceOutputDto.isPayed());
-            updatedInvoice.setTotalCost(invoiceOutputDto.getTotalCost());
+            updatedInvoice.setTotalrepaircost(invoiceOutputDto.getTotalCost());
             updatedInvoice.setRepairDate(invoiceOutputDto.getRepairDate());
             updatedInvoice.setUser(invoiceOutputDto.getUser());
             return transferInvoiceToDto(updatedInvoice);
         }
 
-    }
+    }*/
 
     public String deleteInvoice(long id) {
         Optional<Invoice> invoice = invoiceRepository.findById(id);
@@ -126,8 +144,8 @@ public class InvoiceService {
         if (invoice.getUser() !=null){
             invoiceDto.setUser(invoice.getUser());
         }
-        if (invoice.getTotalCost() != 0.0){
-            invoiceDto.setTotalCost(invoice.getTotalCost());
+        if (invoice.getTotalrepaircost() != 0.0){
+            invoiceDto.setTotalCost(invoice.getTotalrepaircost());
         }
 
         return invoiceDto;
@@ -139,7 +157,7 @@ public class InvoiceService {
         invoice.setUser(invoiceInputDto.getUser());
         invoice.setRepairDate(invoiceInputDto.getRepairDate());
         invoice.setPayed(invoiceInputDto.isPayed());
-        invoice.setTotalCost(invoiceInputDto.getTotalCost());
+        invoice.setTotalrepaircost(invoiceInputDto.getTotalCost());
 
 
         return invoice;

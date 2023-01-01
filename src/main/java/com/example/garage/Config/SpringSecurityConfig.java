@@ -72,13 +72,17 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.GET, "/invoices").permitAll()
                 .antMatchers(HttpMethod.GET, "/invoices/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/invoices/user").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/invoices").permitAll()
+                .antMatchers(HttpMethod.POST, "/invoices/{service_id}").permitAll()
                 .antMatchers(HttpMethod.PUT, "/invoices/{id}/payed").hasRole("DESK")
                 .antMatchers(HttpMethod.PUT, "/invoices/{id}/").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/invoices/{id}").permitAll()
                 //----------------------------------------Endpoints Service--------------------------------------
 
                 //----------------------------------------Endpoints Repair--------------------------------------
+                .antMatchers(HttpMethod.GET, "/repairs/{id}").permitAll()
+                .antMatchers(HttpMethod.POST, "/repairs/{carpart_id}/{service_id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/repairs/{id}/setrepaired").hasRole("MECHANIC")
+
 
                 //----------------------------------------Endpoints User--------------------------------------
                 .antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
