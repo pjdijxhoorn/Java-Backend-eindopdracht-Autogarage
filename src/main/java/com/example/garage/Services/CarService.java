@@ -148,6 +148,7 @@ public class CarService {
         }else {
             Car updatedcar = car.get();
             updatedcar.setCarstatus(carOutputDto.getCarstatus());
+            carRepository.save(updatedcar);
             return transferCarToDto(updatedcar);
     }
     }
@@ -162,6 +163,7 @@ public class CarService {
         }else {
             Car updatedcar = car.get();
             updatedcar.setCarstatus(carOutputDto.getCarstatus());
+            carRepository.save(updatedcar);
             return transferCarToDto(updatedcar);
         }
     }

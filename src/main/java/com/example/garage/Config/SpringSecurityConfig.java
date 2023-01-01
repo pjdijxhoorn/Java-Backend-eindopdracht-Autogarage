@@ -78,6 +78,7 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.DELETE, "/invoices/{id}").permitAll()
                 //----------------------------------------Endpoints Service--------------------------------------
                 .antMatchers(HttpMethod.POST, "/Services/{car_id}").permitAll()
+                .antMatchers(HttpMethod.PUT, "/Services/{id}/mechanicdone").permitAll()
 
 
                 //----------------------------------------Endpoints Repair--------------------------------------

@@ -27,6 +27,7 @@ public class CarService {
     private boolean custumor_response;
     @Value("${some.key:false}")
     private  boolean mechanic_done;
+    private double totalrepaircost;
     //relations.........................................
     @OneToMany(mappedBy = "carpart")
     List<Repair> repairs;
@@ -38,4 +39,14 @@ public class CarService {
     @OneToOne(mappedBy = "carService")
     private Invoice invoice;
 
+    public double calculateRepairCost(){
+        double total = 0.0;
+        //total repair price is the combined repair items
+        if (repairs != null){
+            for (Repair repair: repairs){
+                total += repair.getRepairCost();}
+        }else{
+            total= 0.0;}
+        return total;
+    }
 }
