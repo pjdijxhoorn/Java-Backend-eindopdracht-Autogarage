@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static com.lowagie.text.Element.ALIGN_LEFT;
+
 @Service
 public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
@@ -199,7 +201,7 @@ public class InvoiceService {
 
             // adress info
             Paragraph paragraph = new Paragraph("GARAGE TRANSPARANT\n See what is happening to your car.\n Paleis Noordeinde\n 2500 GK Den Haag\n Phone: 030-12345678 \n Email: SomeFake@Adres.com", fontparagraphinfo);
-            paragraph.setAlignment(Paragraph.ALIGN_LEFT);
+            paragraph.setAlignment(ALIGN_LEFT);
 
             //title
             Paragraph paragraph1 = new Paragraph("INVOICE\n",fontTitle);
@@ -216,8 +218,10 @@ public class InvoiceService {
             Paragraph paragraph3 = new Paragraph("-----------------------------------------------------------------------", lines);
             paragraph3.setAlignment(Paragraph.ALIGN_TOP);
 
-            Paragraph paragraph4 = new Paragraph(String.valueOf(invoice.getTotalcost()), fontparagraph);
-            paragraph4.setAlignment(Paragraph.ALIGN_LEFT);
+            Paragraph paragraph4 = new Paragraph(repairItemStringBuilder(invoice), fontparagraph);
+            paragraph4.setAlignment(ALIGN_LEFT);
+
+
 
             Paragraph paragraph5 = new Paragraph("-----------------------------------------------------------------------", lines);
             paragraph5.setAlignment(Paragraph.ALIGN_TOP);
@@ -238,10 +242,15 @@ public class InvoiceService {
             document.add(paragraph5);
             document.add(paragraph6);
             document.close();
+        }
     }
+
+    public String repairItemStringBuilder(Invoice invoice){
+        StringBuilder repairitems = new StringBuilder();
+        for (Repair repair: invoice.getCarService().getRepairs()){
+            repairitems.append("Carpart: ").append(repair.getCarpart().carpartname).append("\t\t\t").append("Repair-cost: ").append(repair.getRepairCost()).append("\t\t\t").append("Repair-done: ").append(repair.isRepair_done()).append(" \n").append("Notes: ").append(repair.getNotes()).append("\n \n");
+        }
+        repairitems.append("APK CHECK \t\t\t" + Invoice.APKCHECK + "\t\t\tvoldaan");
+        return repairitems.toString();
     }
-
-
-
-
 }
