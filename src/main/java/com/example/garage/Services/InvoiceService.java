@@ -2,6 +2,7 @@ package com.example.garage.Services;
 
 import com.example.garage.Dtos.Input.InvoiceInputDto;
 import com.example.garage.Dtos.Output.InvoiceOutputDto;
+import com.example.garage.Exceptions.BadRequestException;
 import com.example.garage.Exceptions.RecordNotFoundException;
 import com.example.garage.Models.*;
 import com.example.garage.Models.CarService;
@@ -73,7 +74,10 @@ public class InvoiceService {
     public long createInvoice(long service_id) {
         Optional<CarService> optionalcarservice = carServiceRepository.findById(service_id);
         if (optionalcarservice.isEmpty()){
-            throw new RecordNotFoundException("no carservice found with this id "+ service_id);
+            throw new RecordNotFoundException("no car service found with this id "+ service_id);
+        }
+        else if (!optionalcarservice.get().isMechanic_done()){
+            throw new BadRequestException("The mechanic isn't yet finished with his job so you cant make the invoice just yet. ");
         }
         else {
             CarService carService = optionalcarservice.get();

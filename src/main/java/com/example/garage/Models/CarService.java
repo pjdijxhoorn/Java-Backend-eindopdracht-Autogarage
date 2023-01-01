@@ -23,6 +23,10 @@ public class CarService {
     private Long id;
     @Value("${some.key:false}")
     private boolean repair_approved;
+    @Value("${some.key:false}")
+    private boolean custumor_response;
+    @Value("${some.key:false}")
+    private  boolean mechanic_done;
     //relations.........................................
     @OneToMany(mappedBy = "carpart")
     List<Repair> repairs;

@@ -29,6 +29,7 @@ public class CarService {
         this.userRepository = userRepository;
     }
 
+
     public Iterable<CarOutputDto> getAllCars() {
         ArrayList<CarOutputDto> carOutputDtos = new ArrayList<>();
         Iterable<Car> allcars = carRepository.findAll();

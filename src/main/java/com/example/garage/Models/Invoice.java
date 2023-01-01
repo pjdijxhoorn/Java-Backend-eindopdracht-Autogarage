@@ -44,8 +44,12 @@ public class Invoice {
 
     public double calculateRepairCost(){
         double total = 0.0;
-        for (Repair repair: carService.repairs){
-           total+=repair.getRepairCost();
+        // the repair price can only be calculated if the customer approved repairs
+        if (carService.isRepair_approved()){
+            //total repair price is the combined repair items
+            for (Repair repair: carService.repairs){
+                total+=repair.getRepairCost();
+            }
         }
         return total;
    }
@@ -53,7 +57,7 @@ public class Invoice {
    public double calculateTotalCost(){
         double total = 0.0;
         total += APKCHECK;
-        total += +totalrepaircost;
+        total += totalrepaircost;
         total = total + ((total / 100) * btw);
         total = Math.round(total*100.0)/100.0;
        return  total;
