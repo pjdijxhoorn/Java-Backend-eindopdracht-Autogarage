@@ -32,13 +32,13 @@ public class RepairController {
         return ResponseEntity.ok(repairService.getOneRepairByID(id));
     }
 
-    @PostMapping("/{carpart_id}/{service_id}")
-    public ResponseEntity <String> createRepair(@PathVariable long carpart_id, @PathVariable long service_id, @Valid @RequestBody RepairInputDto repairInputDto, BindingResult br){
+    @PostMapping("/{carpart}/{service_id}")
+    public ResponseEntity <String> createRepair(@PathVariable String carpart, @PathVariable long service_id, @Valid @RequestBody RepairInputDto repairInputDto, BindingResult br){
         if (br.hasErrors()) {
             String errorString = getErrorString(br);
             return new ResponseEntity<>(errorString, HttpStatus.BAD_REQUEST);
         } else {
-            long createdId = repairService.createRepair(repairInputDto,carpart_id,service_id);
+            long createdId = repairService.createRepair(repairInputDto,carpart,service_id);
             URI uri = URI.create(
                     ServletUriComponentsBuilder
                             .fromCurrentContextPath()

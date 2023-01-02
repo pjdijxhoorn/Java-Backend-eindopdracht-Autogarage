@@ -13,6 +13,8 @@ import com.example.garage.Repositories.RepairRepository;
 import com.example.garage.Repositories.CarServiceRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -38,16 +40,20 @@ public class RepairService {
       }
    }
 
-   public long createRepair(RepairInputDto repairInputDto, long carpart_id, long carservice_id){
+   public long createRepair(RepairInputDto repairInputDto, String carpart, long carservice_id){
       Optional<CarService> carservice = carServiceRepository.findById(carservice_id);
-      Optional<CarPart> carpart = carpartRepository.findById(carpart_id);
-      if (carservice.isEmpty()){
-         throw new RecordNotFoundException("this service seems to be non existing : " + carservice_id);
-      } else if (carpart.isEmpty()) {
-         throw new RecordNotFoundException("this carpart seems to be non existing : " + carpart_id);
+      if (carservice.isEmpty()) {
+         throw new RecordNotFoundException("this carservice seems to be non existing : " + carservice_id);
       }else{
          CarService carservice1 = carservice.get();
-         CarPart carpart1 = carpart.get();
+         CarPart carpart1 = new CarPart();
+         for (CarPart carpartx: carservice1.getCar().getCarparts()){
+            String carpartname = String.valueOf(carpartx.getCarpartname());
+            if (Objects.equals(carpartname, carpart)){
+               carpart1 = carpartRepository.getById(carpartx.getId());
+               System.out.println(carpartname + carpart+ carpart1.getId());
+            }
+         }
          Repair newrepair = transferDtotoRepair(repairInputDto);
          newrepair.setCarpart(carpart1);
          newrepair.setCarservice(carservice1);
