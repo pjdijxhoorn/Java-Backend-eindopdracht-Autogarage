@@ -54,4 +54,5 @@ INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice
 INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice_id) VALUES (104, 'Suspension was like a babycart when you drop it of a cliff', 100.0, false, 104, 100);
 --INSERT INTO invoices (id, totalrepaircost, totalcost, payed, repair_date, User_username, car_service_id, car_id) VALUES (1, 70.0, 121.0, false, '2020-12-29', 'admin',100, 100 );
 
+-- new branch
 
