@@ -61,20 +61,31 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.GET, "/cars").permitAll()
                 .antMatchers(HttpMethod.GET, "/cars/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/cars/licenseplate/{licenseplate}").permitAll()
+                .antMatchers(HttpMethod.GET, "/cars/user").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/cars").hasRole("DESK")
                 .antMatchers(HttpMethod.PUT, "/cars/{id}").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/cars/{id}/Statusdesk").hasRole("DESK")
-                .antMatchers(HttpMethod.PUT, "/cars/{id}/Statusmechanic").hasRole("MECHANIC")
+                .antMatchers(HttpMethod.PUT, "/cars/{id}/statusdesk").hasRole("DESK")
+                .antMatchers(HttpMethod.PUT, "/cars/{id}/statusmechanic").hasRole("MECHANIC")
                 .antMatchers(HttpMethod.DELETE,"/cars/{id}").permitAll()
 
                 //----------------------------------------Endpoints Invoice--------------------------------------
                 .antMatchers(HttpMethod.GET, "/invoices").permitAll()
                 .antMatchers(HttpMethod.GET, "/invoices/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/invoices/user").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/invoices").permitAll()
+                .antMatchers(HttpMethod.POST, "/invoices/{service_id}").permitAll()
                 .antMatchers(HttpMethod.PUT, "/invoices/{id}/payed").hasRole("DESK")
                 .antMatchers(HttpMethod.PUT, "/invoices/{id}/").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/invoices/{id}").permitAll()
+
+                //----------------------------------------Endpoints Service--------------------------------------
+                .antMatchers(HttpMethod.POST, "/services/{car_id}").permitAll()
+                .antMatchers(HttpMethod.PUT, "/services/{id}/mechanicdone").permitAll()
+                .antMatchers(HttpMethod.GET, "/services").permitAll()
+
+                //----------------------------------------Endpoints Repair--------------------------------------
+                .antMatchers(HttpMethod.GET, "/repairs/{id}").permitAll()
+                .antMatchers(HttpMethod.POST, "/repairs/{carpart_id}/{service_id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/repairs/{id}/setrepaired").hasRole("MECHANIC")
 
 
                 //----------------------------------------Endpoints User--------------------------------------

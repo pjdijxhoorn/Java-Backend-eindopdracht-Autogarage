@@ -2,14 +2,14 @@ package com.example.garage.Services;
 
 import com.example.garage.Dtos.Input.CarInputDto;
 import com.example.garage.Dtos.Output.CarOutputDto;
-import com.example.garage.Exceptions.BadRequestException;
 import com.example.garage.Exceptions.RecordNotFoundException;
-import com.example.garage.Models.Car;
-import com.example.garage.Models.CarPart;
-import com.example.garage.Models.Carstatus;
-import com.example.garage.Models.Name;
+import com.example.garage.Models.*;
 import com.example.garage.Repositories.CarRepository;
 import com.example.garage.Repositories.CarpartRepository;
+import com.example.garage.Repositories.UserRepository;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,10 +22,15 @@ public class CarService {
 
     private final CarRepository carRepository;
     private final CarpartRepository carpartRepository;
-    public CarService(CarRepository carRepository, CarpartRepository carpartRepository) {
+    private final UserRepository userRepository;
+    private final EmailService emailService;
+    public CarService(CarRepository carRepository, CarpartRepository carpartRepository, UserRepository userRepository, EmailService emailService) {
         this.carRepository = carRepository;
         this.carpartRepository = carpartRepository;
+        this.userRepository = userRepository;
+        this.emailService = emailService;
     }
+
 
     public Iterable<CarOutputDto> getAllCars() {
         ArrayList<CarOutputDto> carOutputDtos = new ArrayList<>();
@@ -53,6 +58,28 @@ public class CarService {
         else {
             return transferCarToDto(car);}
     }
+    public Iterable<CarOutputDto> getAllCarsfromUser() {
+        String currentUserName = new String();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            currentUserName = authentication.getName();
+            Optional<User> currentuser = userRepository.findById(currentUserName);
+            if (currentuser.isPresent()){
+                User user = currentuser.get();
+                ArrayList<CarOutputDto> carOutputDtos = new ArrayList<>();
+                Iterable<Car> allcars = carRepository.findByUser(user);
+                for (Car a: allcars){
+                    CarOutputDto carDto = transferCarToDto(a);
+                    carOutputDtos.add(carDto);
+                }
+                return carOutputDtos;
+            }else {
+                throw new RecordNotFoundException("this users seems to have no values");
+            }
+        }
+        throw new RecordNotFoundException("no User is logged in at the moment");
+    }
+
 
     public long createCar(CarInputDto carInputDto) {
 
@@ -66,27 +93,27 @@ public class CarService {
             Car newcar = transferDtotoCar(carInputDto);
             Car savedcar = carRepository.save(newcar);
             // voeg onderdelen toe met lege waarden
-            CarPart Tires = new CarPart(Name.TIRES,"",false);
+            CarPart Tires = new CarPart(CarpartName.TIRES,"",false);
             CarPart newTires = carpartRepository.save(Tires);
             newTires.setCar(savedcar);
 
-            CarPart Brakes = new CarPart(Name.BRAKES, "", false);
+            CarPart Brakes = new CarPart(CarpartName.BRAKES, "", false);
             CarPart newBrakes = carpartRepository.save(Brakes);
             newBrakes.setCar(savedcar);
 
-            CarPart steering = new CarPart(Name.STEERING_LINING, "", false);
+            CarPart steering = new CarPart(CarpartName.STEERING_LINING, "", false);
             CarPart newsteering = carpartRepository.save(steering);
             newsteering.setCar(savedcar);
 
-            CarPart Lights = new CarPart(Name.LIGHTS, "", false);
+            CarPart Lights = new CarPart(CarpartName.LIGHTS, "", false);
             CarPart newLights = carpartRepository.save(Lights);
             newLights.setCar(savedcar);
 
-            CarPart Suspension = new CarPart(Name.SUSPENSION, "", false);
+            CarPart Suspension = new CarPart(CarpartName.SUSPENSION, "", false);
             CarPart newSuspension = carpartRepository.save(Suspension);
             newSuspension.setCar(savedcar);
 
-            CarPart schock_absorption = new CarPart(Name.SCHOCK_ABSORPTION, "", false);
+            CarPart schock_absorption = new CarPart(CarpartName.SCHOCK_ABSORPTION, "", false);
             CarPart newschock_absorption = carpartRepository.save(schock_absorption);
             newschock_absorption.setCar(savedcar);
 
@@ -94,10 +121,7 @@ public class CarService {
             return savedcar.getId();
         } else if (car.getLicenseplate().equals( licenseplate)) {
             throw new RecordNotFoundException("This: " + licenseplate + " license-plate is already registered. ");
-
-
-        }
-        else {
+        } else {
             throw new RecordNotFoundException("Something went wrong");
         }
     }
@@ -126,6 +150,7 @@ public class CarService {
         }else {
             Car updatedcar = car.get();
             updatedcar.setCarstatus(carOutputDto.getCarstatus());
+            carRepository.save(updatedcar);
             return transferCarToDto(updatedcar);
     }
     }
@@ -140,9 +165,26 @@ public class CarService {
         }else {
             Car updatedcar = car.get();
             updatedcar.setCarstatus(carOutputDto.getCarstatus());
+            carRepository.save(updatedcar);
+            String email = updatedcar.getUser().getEmail();
+            if (updatedcar.getCarstatus() == Carstatus.AWAITING_APPROVAL){
+                this.emailService.sendMessage(//
+                        email,//
+                        "repair approval",//
+                        "Your car is awaiting approval for the repairs."//
+                    );
+                }
+            if (updatedcar.getCarstatus() == Carstatus.READY){
+                this.emailService.sendMessage(//
+                        email,//
+                        "Your car is ready",//
+                        "Your car is awaiting pickup thank you for choosing transparant garage."//
+                );
+            }
             return transferCarToDto(updatedcar);
+            }
         }
-    }
+
 
     public String deleteCar(long id) {
         Optional<Car> auto = carRepository.findById(id);
@@ -155,7 +197,7 @@ public class CarService {
             return "Car Removed successfully";}
     }
     private CarOutputDto transferCarToDto(Car car) {
-        CarOutputDto autoDto= new CarOutputDto();
+        CarOutputDto autoDto = new CarOutputDto();
 
         if (car.getLicenseplate() !=null){
             autoDto.setLicenseplate(car.getLicenseplate());

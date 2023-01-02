@@ -2,6 +2,7 @@ package com.example.garage.Controllers;
 
 import com.example.garage.Dtos.Input.CarInputDto;
 import com.example.garage.Dtos.Output.CarOutputDto;
+import com.example.garage.Dtos.Output.InvoiceOutputDto;
 import com.example.garage.Services.CarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,11 @@ public class CarController {
         return ResponseEntity.ok(carService.getOneCarByLincensePlate(licenseplate));
     }
 
+    @GetMapping("/user")
+    public ResponseEntity<Iterable<CarOutputDto>> getAllCarsfromUser(){
+        return ResponseEntity.ok(carService.getAllCarsfromUser());
+    }
+
     @PostMapping("")
     public ResponseEntity<String> createCar(@Valid @RequestBody CarInputDto carInputDto, BindingResult br){
         if (br.hasErrors()) {
@@ -56,12 +62,12 @@ public class CarController {
         }
     }
 
-    @PutMapping("{id}/Statusdesk")
+    @PutMapping("{id}/statusdesk")
     public ResponseEntity<CarOutputDto> updateCarStatusDesk(@PathVariable long id, @RequestBody CarOutputDto carOutputDto){
         return ResponseEntity.ok(carService.updateCarStatusDesk(id, carOutputDto));
     }
 
-    @PutMapping("{id}/Statusmechanic")
+    @PutMapping("{id}/statusmechanic")
     public ResponseEntity<CarOutputDto> updateCarStatusMechanic(@PathVariable long id, @RequestBody CarOutputDto carOutputDto){
         return ResponseEntity.ok(carService.updateCarStatusMechanic(id, carOutputDto));
     }
