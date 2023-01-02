@@ -23,10 +23,12 @@ public class CarService {
     private final CarRepository carRepository;
     private final CarpartRepository carpartRepository;
     private final UserRepository userRepository;
-    public CarService(CarRepository carRepository, CarpartRepository carpartRepository, UserRepository userRepository) {
+    private final EmailService emailService;
+    public CarService(CarRepository carRepository, CarpartRepository carpartRepository, UserRepository userRepository, EmailService emailService) {
         this.carRepository = carRepository;
         this.carpartRepository = carpartRepository;
         this.userRepository = userRepository;
+        this.emailService = emailService;
     }
 
 
@@ -164,9 +166,25 @@ public class CarService {
             Car updatedcar = car.get();
             updatedcar.setCarstatus(carOutputDto.getCarstatus());
             carRepository.save(updatedcar);
+            String email = updatedcar.getUser().getEmail();
+            if (updatedcar.getCarstatus() == Carstatus.AWAITING_APPROVAL){
+                this.emailService.sendMessage(//
+                        email,//
+                        "repair approval",//
+                        "Your car is awaiting approval for the repairs."//
+                    );
+                }
+            if (updatedcar.getCarstatus() == Carstatus.READY){
+                this.emailService.sendMessage(//
+                        email,//
+                        "Your car is ready",//
+                        "Your car is awaiting pickup thank you for choosing transparant garage."//
+                );
+            }
             return transferCarToDto(updatedcar);
+            }
         }
-    }
+
 
     public String deleteCar(long id) {
         Optional<Car> auto = carRepository.findById(id);

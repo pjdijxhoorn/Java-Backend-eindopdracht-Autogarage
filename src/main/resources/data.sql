@@ -23,6 +23,7 @@ UPDATE carparts SET car_id = 100 WHERE id = 105;
 INSERT INTO users (username, password, email, enabled) VALUES ('user', '$2a$12$OUr7IAhav2a8Wij4P0frUOT.6Esb6f/Agb3LqPevjBRdLM7dveoc2','user@test.nl', TRUE);
 INSERT INTO users (username, password, email, enabled) VALUES ('admin', '$2a$12$cspEf2prwC.IZLymxeWtLOB3FPrixpY9p9Dcp9G.JSRNpPaOfXGp2', 'admin@test.nl', TRUE);
 INSERT INTO users (username, password, email, enabled) VALUES ('desk', '$2a$12$cspEf2prwC.IZLymxeWtLOB3FPrixpY9p9Dcp9G.JSRNpPaOfXGp2', 'admin@test.nl', TRUE);
+INSERT INTO users (username, password, email, enabled) VALUES ('paul', '$2a$12$cspEf2prwC.IZLymxeWtLOB3FPrixpY9p9Dcp9G.JSRNpPaOfXGp2', 'pjdijxhoorn@hotmail.com', TRUE);
 
 
 INSERT INTO authorities (username, authority) VALUES ('user', 'ROLE_USER');
@@ -30,13 +31,17 @@ INSERT INTO authorities (username, authority) VALUES ('admin', 'ROLE_USER');
 INSERT INTO authorities (username, authority) VALUES ('admin', 'ROLE_ADMIN');
 INSERT INTO authorities (username, authority) VALUES ('admin', 'ROLE_MECHANIC');
 INSERT INTO authorities (username, authority) VALUES ('desk', 'ROLE_DESK');
+INSERT INTO authorities (username, authority) VALUES ('paul', 'ROLE_USER');
+INSERT INTO authorities (username, authority) VALUES ('paul', 'ROLE_MECHANIC');
+INSERT INTO authorities (username, authority) VALUES ('paul', 'ROLE_ADMIN');
+INSERT INTO authorities (username, authority) VALUES ('paul', 'ROLE_DESK');
 
 
-UPDATE cars SET User_username = 'user' WHERE id = 100;
-UPDATE cars SET User_username = 'user' WHERE id = 101;
-UPDATE cars SET User_username = 'user' WHERE id = 102;
-UPDATE cars SET User_username = 'user' WHERE id = 103;
-UPDATE cars SET User_username = 'user' WHERE id = 104;
+UPDATE cars SET User_username = 'paul' WHERE id = 100;
+UPDATE cars SET User_username = 'paul' WHERE id = 101;
+UPDATE cars SET User_username = 'paul' WHERE id = 102;
+UPDATE cars SET User_username = 'paul' WHERE id = 103;
+UPDATE cars SET User_username = 'paul' WHERE id = 104;
 UPDATE cars SET User_username = 'admin' WHERE id = 105;
 UPDATE cars SET User_username = 'admin' WHERE id = 106;
 

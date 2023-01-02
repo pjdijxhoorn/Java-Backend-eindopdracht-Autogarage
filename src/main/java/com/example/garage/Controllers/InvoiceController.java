@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
@@ -38,7 +39,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/pdf/generate/{id}")
-    public void generatePDF(@PathVariable long id, HttpServletResponse response) throws IOException {
+    public void generatePDF(@PathVariable long id, HttpServletResponse response) throws IOException, MessagingException {
 
         response.setContentType("applcation/pdf");
         DateFormat dateformatter = new SimpleDateFormat("dd-MM-yyyy");

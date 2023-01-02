@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,11 +29,13 @@ public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
     private final UserRepository userRepository;
     private final CarServiceRepository carServiceRepository;
+    private final EmailService emailService;
 
-    public InvoiceService(InvoiceRepository invoiceRepository, UserRepository userRepository, CarServiceRepository carServiceRepository) {
+    public InvoiceService(InvoiceRepository invoiceRepository, UserRepository userRepository, CarServiceRepository carServiceRepository, EmailService emailService) {
         this.invoiceRepository = invoiceRepository;
         this.userRepository = userRepository;
         this.carServiceRepository = carServiceRepository;
+        this.emailService = emailService;
     }
 
     public Iterable<InvoiceOutputDto> getAllInvoices() {
@@ -173,7 +176,7 @@ public class InvoiceService {
         return invoice;
     }
 
-    public void export(long id, HttpServletResponse response) throws IOException {
+    public void export(long id, HttpServletResponse response) throws IOException, MessagingException {
         Optional<Invoice> optionalinvoice = invoiceRepository.findById(id);
         if (optionalinvoice.isEmpty()){
             throw new RecordNotFoundException("No Invoice found with the id of : "+ id);
@@ -246,6 +249,15 @@ public class InvoiceService {
             document.add(paragraph5);
             document.add(paragraph6);
             document.close();
+
+            /*document.save(response.getOutputStream(), SaveFormat.PNG)
+            String email = invoice.getUser().getEmail();
+                this.emailService.sendMessageWithAttach(//
+                    email,//
+                    "Invoice Garage Transparant",//
+                    "Hereby we would like to present you with the bill.",
+
+                );*/
         }
     }
 
@@ -255,7 +267,6 @@ public class InvoiceService {
             repairitems.append("Carpart: ").append(repair.getCarpart().carpartname).append("\t\t\t").append("Repair-cost: ").append(repair.getRepairCost()).append("\t\t\t").append("Repair-done: ").append(repair.isRepair_done()).append(" \n").append("Notes: ").append(repair.getNotes()).append("\n \n");
         }
         repairitems.append("APK CHECK \t\t\t" + Invoice.APKCHECK + "\t\t\tvoldaan");
-        System.out.println(repairitems);
         return repairitems.toString();
     }
 }
