@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static com.lowagie.text.Element.ALIGN_LEFT;
+import static com.lowagie.text.Element.*;
 
 @Service
 public class InvoiceService {
@@ -199,6 +199,10 @@ public class InvoiceService {
 
             // actual text on the pdf
 
+            Image PNG = Image.getInstance("src/main/resources/garage_logomini.png");
+            PNG.setAlignment(ALIGN_RIGHT);
+            document.add(PNG);
+
             // adress info
             Paragraph paragraph = new Paragraph("GARAGE TRANSPARANT\n See what is happening to your car.\n Paleis Noordeinde\n 2500 GK Den Haag\n Phone: 030-12345678 \n Email: SomeFake@Adres.com", fontparagraphinfo);
             paragraph.setAlignment(ALIGN_LEFT);
@@ -251,6 +255,7 @@ public class InvoiceService {
             repairitems.append("Carpart: ").append(repair.getCarpart().carpartname).append("\t\t\t").append("Repair-cost: ").append(repair.getRepairCost()).append("\t\t\t").append("Repair-done: ").append(repair.isRepair_done()).append(" \n").append("Notes: ").append(repair.getNotes()).append("\n \n");
         }
         repairitems.append("APK CHECK \t\t\t" + Invoice.APKCHECK + "\t\t\tvoldaan");
+        System.out.println(repairitems);
         return repairitems.toString();
     }
 }

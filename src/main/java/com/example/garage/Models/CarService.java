@@ -29,7 +29,7 @@ public class CarService {
     private  boolean mechanic_done;
     private double totalrepaircost;
     //relations.........................................
-    @OneToMany(mappedBy = "carpart")
+    @OneToMany(mappedBy = "carservice")
     List<Repair> repairs;
 
     @ManyToOne

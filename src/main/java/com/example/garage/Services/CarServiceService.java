@@ -1,5 +1,6 @@
 package com.example.garage.Services;
 
+import com.example.garage.Dtos.Output.CarOutputDto;
 import com.example.garage.Dtos.Output.CarServiceOutputDto;
 import com.example.garage.Exceptions.RecordNotFoundException;
 import com.example.garage.Models.Car;
@@ -8,6 +9,7 @@ import com.example.garage.Repositories.CarRepository;
 import com.example.garage.Repositories.CarServiceRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -20,6 +22,20 @@ public class CarServiceService {
         this.carRepository = carRepository;
         this.carServiceRepository = carServiceRepository;
     }
+
+    public Iterable<CarServiceOutputDto> getAllCarServices() {
+        ArrayList<CarServiceOutputDto> carServiceOutputDtos = new ArrayList<>();
+        Iterable<CarService> allcarservices = carServiceRepository.findAll();
+        for (CarService a: allcarservices){
+            CarServiceOutputDto carserviceDto = transferCarServicetoOuputDto(a);
+            carServiceOutputDtos.add(carserviceDto);
+        }
+        return carServiceOutputDtos;
+    }
+
+
+
+
 
     public CarServiceOutputDto createCarService(long car_id) {
         Optional<Car> optionalcar = carRepository.findById(car_id);

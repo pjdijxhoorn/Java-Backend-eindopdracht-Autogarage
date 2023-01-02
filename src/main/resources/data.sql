@@ -41,8 +41,12 @@ UPDATE cars SET User_username = 'admin' WHERE id = 105;
 UPDATE cars SET User_username = 'admin' WHERE id = 106;
 
 INSERT INTO carservices(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (100, true, true, true, 0.0, 100);
+
 INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice_id) VALUES (100, 'worn out tires not enough profile left', 100.0, false, 100, 100);
-INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice_id) VALUES (101, 'worn out brakes', 1.0, false, 101, 100);
+INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice_id) VALUES (101, 'worn out brakes', 100.0, false, 101, 100);
+INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice_id) VALUES (102, 'steering lining was way off', 100.0, false, 102, 100);
+INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice_id) VALUES (103, 'brakelight broken', 100.0, false, 103, 100);
+INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice_id) VALUES (104, 'Suspension was like a babycart when you drop it of a cliff', 100.0, false, 104, 100);
 --INSERT INTO invoices (id, totalrepaircost, totalcost, payed, repair_date, User_username, car_service_id, car_id) VALUES (1, 70.0, 121.0, false, '2020-12-29', 'admin',100, 100 );
 
 
