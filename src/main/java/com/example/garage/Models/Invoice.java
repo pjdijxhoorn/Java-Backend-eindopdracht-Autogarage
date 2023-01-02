@@ -48,7 +48,8 @@ public class Invoice {
         if (carService.isRepair_approved()){
             //total repair price is the combined repair items
             for (Repair repair: carService.repairs){
-                total+=repair.getRepairCost();
+                if (repair.isRepair_done()){
+                total+=repair.getRepairCost();}
             }
         }
         return total;

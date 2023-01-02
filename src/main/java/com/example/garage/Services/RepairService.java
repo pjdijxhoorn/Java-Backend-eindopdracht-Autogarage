@@ -47,6 +47,7 @@ public class RepairService {
       }else{
          CarService carservice1 = carservice.get();
          CarPart carpart1 = new CarPart();
+         //next lines are to get the right carpart by name easier for the mechanic then id for every car has the same basic components
          for (CarPart carpartx: carservice1.getCar().getCarparts()){
             String carpartname = String.valueOf(carpartx.getCarpartname());
             if (Objects.equals(carpartname, carpart)){
