@@ -59,7 +59,7 @@ public class CarService {
             return transferCarToDto(car);}
     }
     public Iterable<CarOutputDto> getAllCarsfromUser() {
-        String currentUserName = new String();
+        String currentUserName;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             currentUserName = authentication.getName();
@@ -73,6 +73,30 @@ public class CarService {
                     carOutputDtos.add(carDto);
                 }
                 return carOutputDtos;
+            }else {
+                throw new RecordNotFoundException("this users seems to have no values");
+            }
+        }
+        throw new RecordNotFoundException("no User is logged in at the moment");
+    }
+
+    public String getAllCarsStatusfromUser() {
+        String currentUserName;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            currentUserName = authentication.getName();
+            Optional<User> currentuser = userRepository.findById(currentUserName);
+            if (currentuser.isPresent()){
+                StringBuilder status = new StringBuilder();
+                User user = currentuser.get();
+                Iterable<Car> allcars = carRepository.findByUser(user);
+                for (Car a: allcars){
+                   status.append(a.getLicenseplate());
+                   status.append(" STATUS : ");
+                   status.append(a.getCarstatus());
+                   status.append("\n");
+                }
+                return status.toString();
             }else {
                 throw new RecordNotFoundException("this users seems to have no values");
             }

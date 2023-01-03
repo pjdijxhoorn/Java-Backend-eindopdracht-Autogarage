@@ -20,6 +20,15 @@ public class CarServiceController {
     public ResponseEntity<Iterable<CarServiceOutputDto>> getAllCarServices(){
         return ResponseEntity.ok(carServiceService.getAllCarServices());
     }
+    @GetMapping("{id}")
+    public ResponseEntity<CarServiceOutputDto> getOneCarServiceByID(@PathVariable long id) {
+        return ResponseEntity.ok(carServiceService.getOneCarServiceByID(id));
+    }
+    @GetMapping("/user")
+    public ResponseEntity<Iterable<CarServiceOutputDto>> getAllCarServiceFromUser() {
+        return ResponseEntity.ok(carServiceService.getAllCarServiceFromUser());
+    }
+
     @PostMapping("{car_id}")
     public ResponseEntity<CarServiceOutputDto> createCarService(@PathVariable long car_id){
         return ResponseEntity.ok(carServiceService.createCarService(car_id));

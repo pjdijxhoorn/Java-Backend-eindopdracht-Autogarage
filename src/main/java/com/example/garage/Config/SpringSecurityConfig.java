@@ -62,6 +62,7 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.GET, "/cars/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/cars/licenseplate/{licenseplate}").permitAll()
                 .antMatchers(HttpMethod.GET, "/cars/user").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/cars/user/status").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/cars").hasRole("DESK")
                 .antMatchers(HttpMethod.PUT, "/cars/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/cars/{id}/statusdesk").hasRole("DESK")
@@ -79,6 +80,8 @@ public class SpringSecurityConfig {
 
                 //----------------------------------------Endpoints Service--------------------------------------
                 .antMatchers(HttpMethod.GET, "/services").permitAll()
+                .antMatchers(HttpMethod.GET, "/services/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/services/user").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/services/{car_id}").permitAll()
                 .antMatchers(HttpMethod.PUT, "/services/{id}/mechanicdone").permitAll()
                 .antMatchers(HttpMethod.PUT, "/services/{id}/approvaluser").hasRole("USER")

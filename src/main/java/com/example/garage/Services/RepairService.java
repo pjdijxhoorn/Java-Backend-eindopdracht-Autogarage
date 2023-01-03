@@ -52,7 +52,6 @@ public class RepairService {
             String carpartname = String.valueOf(carpartx.getCarpartname());
             if (Objects.equals(carpartname, carpart)){
                carpart1 = carpartRepository.getById(carpartx.getId());
-               System.out.println(carpartname + carpart+ carpart1.getId());
             }
          }
          Repair newrepair = transferDtotoRepair(repairInputDto);

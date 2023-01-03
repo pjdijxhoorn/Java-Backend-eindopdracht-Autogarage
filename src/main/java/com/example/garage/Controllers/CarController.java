@@ -45,6 +45,10 @@ public class CarController {
     public ResponseEntity<Iterable<CarOutputDto>> getAllCarsfromUser(){
         return ResponseEntity.ok(carService.getAllCarsfromUser());
     }
+    @GetMapping("/user/status")
+    public ResponseEntity<String> getAllCarsStatusfromUser(){
+        return ResponseEntity.ok(carService.getAllCarsStatusfromUser());
+    }
 
     @PostMapping("")
     public ResponseEntity<String> createCar(@Valid @RequestBody CarInputDto carInputDto, BindingResult br){

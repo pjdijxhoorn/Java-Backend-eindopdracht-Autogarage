@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -60,7 +59,7 @@ public class InvoiceService {
     }
 
     public Iterable<InvoiceOutputDto> getAllInvoicesfromUser() {
-        String currentUserName = new String();
+        String currentUserName;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             currentUserName = authentication.getName();
@@ -177,7 +176,7 @@ public class InvoiceService {
         return invoice;
     }
 
-    public void export(long id, HttpServletResponse response) throws IOException, MessagingException {
+    public void export(long id, HttpServletResponse response) throws IOException {
         Optional<Invoice> optionalinvoice = invoiceRepository.findById(id);
         if (optionalinvoice.isEmpty()){
             throw new RecordNotFoundException("No Invoice found with the id of : "+ id);

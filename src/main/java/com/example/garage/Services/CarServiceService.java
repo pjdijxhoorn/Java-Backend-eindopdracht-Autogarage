@@ -1,7 +1,6 @@
 package com.example.garage.Services;
 
 import com.example.garage.Dtos.Output.CarServiceOutputDto;
-import com.example.garage.Exceptions.BadRequestException;
 import com.example.garage.Exceptions.RecordNotFoundException;
 import com.example.garage.Models.Car;
 import com.example.garage.Models.CarService;
@@ -39,6 +38,41 @@ public class CarServiceService {
             carServiceOutputDtos.add(carserviceDto);
         }
         return carServiceOutputDtos;
+    }
+
+    public Iterable<CarServiceOutputDto> getAllCarServiceFromUser() {
+        String currentUserName;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            currentUserName = authentication.getName();
+            Optional<User> currentuser = userRepository.findById(currentUserName);
+            if (currentuser.isPresent()){
+                User user = currentuser.get();
+                ArrayList<CarServiceOutputDto> carserviceOutputDtos = new ArrayList<>();
+                Iterable<Car> allcars = carRepository.findByUser(user);
+                for (Car a: allcars){
+                    Iterable<CarService> carservices = a.getCarServices();
+                    for (CarService b:carservices){
+                        CarServiceOutputDto carserviceDto = transferCarServicetoOuputDto(b);
+                        carserviceOutputDtos.add(carserviceDto);
+                    }
+                }
+                return carserviceOutputDtos;
+            }else {
+                throw new RecordNotFoundException("this users seems to have no values");
+            }
+        }
+        throw new RecordNotFoundException("no User is logged in at the moment");
+    }
+
+    public CarServiceOutputDto getOneCarServiceByID(long id) {
+        Optional<CarService> optionalcarservice = carServiceRepository.findById(id);
+        if (optionalcarservice.isEmpty()){
+            throw new RecordNotFoundException("no carservice found with id: "+ id);
+        }else {
+            CarService carservice = optionalcarservice.get();
+            return transferCarServicetoOuputDto(carservice);
+        }
     }
 
 
