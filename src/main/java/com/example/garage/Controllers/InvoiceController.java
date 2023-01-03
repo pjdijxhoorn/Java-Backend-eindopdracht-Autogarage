@@ -46,7 +46,7 @@ public class InvoiceController {
         String currentDateTime = dateformatter.format(new Date());
 
         String headerKey = "content-Disposition";
-        String headerValue = "attachment; filename=Invoice_" + currentDateTime + ".pdf";
+        String headerValue = "attachment; filename="+ id+"Invoice_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
 
         this.invoiceService.export(id,response);

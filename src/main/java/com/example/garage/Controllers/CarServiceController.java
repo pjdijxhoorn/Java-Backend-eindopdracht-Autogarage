@@ -30,5 +30,9 @@ public class CarServiceController {
         return ResponseEntity.ok(carServiceService.mechanicIsDone(id, carServiceOutputDto));
     }
 
+    @PutMapping("{id}/approvaluser")
+    public ResponseEntity<String> approvalUser(@PathVariable long id, @RequestBody CarServiceOutputDto carServiceOutputDto){
+        return ResponseEntity.ok(carServiceService.approvalUser(id, carServiceOutputDto));
+    }
 
 }

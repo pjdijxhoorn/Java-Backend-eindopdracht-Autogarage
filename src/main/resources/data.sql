@@ -42,8 +42,8 @@ UPDATE cars SET User_username = 'paul' WHERE id = 101;
 UPDATE cars SET User_username = 'paul' WHERE id = 102;
 UPDATE cars SET User_username = 'paul' WHERE id = 103;
 UPDATE cars SET User_username = 'paul' WHERE id = 104;
-UPDATE cars SET User_username = 'admin' WHERE id = 105;
-UPDATE cars SET User_username = 'admin' WHERE id = 106;
+UPDATE cars SET User_username = 'paul' WHERE id = 105;
+UPDATE cars SET User_username = 'paul' WHERE id = 106;
 
 INSERT INTO carservices(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (100, true, true, true, 0.0, 100);
 

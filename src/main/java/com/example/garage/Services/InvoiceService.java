@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -249,15 +250,6 @@ public class InvoiceService {
             document.add(paragraph5);
             document.add(paragraph6);
             document.close();
-
-            /*document.save(response.getOutputStream(), SaveFormat.PNG)
-            String email = invoice.getUser().getEmail();
-                this.emailService.sendMessageWithAttach(//
-                    email,//
-                    "Invoice Garage Transparant",//
-                    "Hereby we would like to present you with the bill.",
-
-                );*/
         }
     }
 
