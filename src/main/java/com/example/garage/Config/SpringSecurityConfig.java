@@ -105,6 +105,12 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.DELETE,"/users/{username}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE,"/users/{username}/authorities/{authority}").hasRole("ADMIN")
 
+                //----------------------------------------Endpoints User--------------------------------------
+                .antMatchers(HttpMethod.GET, "/carparts/{car_id}").permitAll()
+                .antMatchers(HttpMethod.PUT, "/carparts/{car_id}/inspection/{carpart}").permitAll()
+
+
+
                 //----------------------------------------Endpoints Auth--------------------------------------
                 .antMatchers(HttpMethod.GET,"/authenticated").authenticated()
                 .antMatchers(HttpMethod.POST,"/authenticate").permitAll()

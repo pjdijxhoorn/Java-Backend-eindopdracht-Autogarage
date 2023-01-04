@@ -33,7 +33,6 @@ public class CarService {
         this.emailService = emailService;
     }
 
-
     public Iterable<CarOutputDto> getAllCars() {
         ArrayList<CarOutputDto> carOutputDtos = new ArrayList<>();
         Iterable<Car> allcars = carRepository.findAll();
@@ -79,7 +78,7 @@ public class CarService {
                 throw new RecordNotFoundException("this users seems to have no values");
             }
         }
-        throw new RecordNotFoundException("no User is logged in at the moment");
+        throw new RecordNotFoundException("no user is logged in at the moment");
     }
 
     public String getAllCarsStatusfromUser() {
@@ -216,7 +215,6 @@ public class CarService {
             }
         }
 
-
     public String deleteCar(long id) {
         Optional<Car> optionalcar = carRepository.findById(id);
         if (optionalcar.isEmpty()){
@@ -245,7 +243,6 @@ public class CarService {
         if(car.getUser() != null) {
             autoDto.setUser(car.getUser());
         }
-
         return autoDto;
     }
 
@@ -261,7 +258,6 @@ public class CarService {
         return car;
 
     }
-
 
     private Boolean validateLicensePlate(String licenseplate){
         if (licenseplate.matches("..-..-..")){
