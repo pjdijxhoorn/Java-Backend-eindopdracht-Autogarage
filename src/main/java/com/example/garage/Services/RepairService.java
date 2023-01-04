@@ -77,6 +77,19 @@ public class RepairService {
          }
       }
    }
+   public String deleteRepair(long id) {
+      Optional<Repair> optionalrepair = repairRepository.findById(id);
+      if (optionalrepair.isEmpty()){
+         throw new RecordNotFoundException("No repair found with the id of : "+ id);
+      }
+      else {
+         Repair repair = optionalrepair.get();
+         repairRepository.delete(repair);
+         return "Repair Removed successfully";}
+   }
+
+
+
 
    private RepairOutputDto transferRepairtoDto(Repair repair){
       RepairOutputDto repairDto = new RepairOutputDto();

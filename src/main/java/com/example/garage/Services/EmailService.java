@@ -33,7 +33,7 @@ public class EmailService {
        this.emailsender.send(message);
    }
 
-    /*public void sendMessageWithAttach(String to, String subject, String text, String fileToAttach) throws MessagingException {
+    public void sendMessageWithAttach(String to, String subject, String text, String fileToAttach) throws MessagingException {
         MimeMessage message = emailsender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
@@ -43,10 +43,8 @@ public class EmailService {
         helper.setText(text);
         FileSystemResource file = new FileSystemResource(new File(fileToAttach));
         helper.addAttachment("Invoice", file);
-
-
         this.emailsender.send(message);
-    }*/
+    }
 
 
 }

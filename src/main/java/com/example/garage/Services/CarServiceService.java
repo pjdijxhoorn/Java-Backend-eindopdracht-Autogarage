@@ -1,9 +1,11 @@
 package com.example.garage.Services;
 
 import com.example.garage.Dtos.Output.CarServiceOutputDto;
+import com.example.garage.Exceptions.BadRequestException;
 import com.example.garage.Exceptions.RecordNotFoundException;
 import com.example.garage.Models.Car;
 import com.example.garage.Models.CarService;
+import com.example.garage.Models.Repair;
 import com.example.garage.Models.User;
 import com.example.garage.Repositories.CarRepository;
 import com.example.garage.Repositories.CarServiceRepository;
@@ -156,6 +158,23 @@ public class CarServiceService {
             }
         }
         throw new RecordNotFoundException("no User is logged in at the moment");
+    }
+
+    public String deletecarservice(long id) {
+        Optional<CarService> optionalcarservice = carServiceRepository.findById(id);
+        if (optionalcarservice.isEmpty()){
+            throw new RecordNotFoundException("No service found with the id of : "+ id);
+        }
+        else {
+            try{
+                CarService carService = optionalcarservice.get();
+                carServiceRepository.delete(carService);
+                return "Repair Removed successfully";
+            }catch(Exception e){
+                throw new BadRequestException("it seems that this is still connected to a repair, a car or a invoice. First delete this/these for deleting this.");
+            }
+        }
+
     }
 
 

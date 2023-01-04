@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -249,6 +250,11 @@ public class InvoiceService {
             document.add(paragraph5);
             document.add(paragraph6);
             document.close();
+
+           /* this.emailService.sendMessageWithAttach(
+                    "pjdijxhoorn@hotmail.com","test", "test", "");
+
+*/
         }
     }
 

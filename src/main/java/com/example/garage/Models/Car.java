@@ -30,13 +30,16 @@ public class Car {
 
     //relations.........................................
     @OneToMany(mappedBy = "car")
-    List<CarPart> carparts;
+    private List<CarPart> carparts;
 
     @OneToMany(mappedBy = "car")
-    List<CarService> carServices;
+    private List<CarService> carServices;
 
     @OneToMany(mappedBy = "car")
-    List<Invoice> invoices;
+    private List<Invoice> invoices;
+
+    @OneToOne
+    private CarPaper carpaper;
 
     @ManyToOne
     @JsonIgnore

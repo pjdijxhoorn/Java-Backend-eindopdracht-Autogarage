@@ -85,12 +85,14 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.POST, "/services/{car_id}").permitAll()
                 .antMatchers(HttpMethod.PUT, "/services/{id}/mechanicdone").permitAll()
                 .antMatchers(HttpMethod.PUT, "/services/{id}/approvaluser").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/services/{id}").permitAll()
 
 
                 //----------------------------------------Endpoints Repair--------------------------------------
                 .antMatchers(HttpMethod.GET, "/repairs/{id}").permitAll()
                 .antMatchers(HttpMethod.POST, "/repairs/{carpart_id}/{service_id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/repairs/{id}/setrepaired").hasRole("MECHANIC")
+                .antMatchers(HttpMethod.DELETE, "/repairs/{id}").permitAll()
 
 
                 //----------------------------------------Endpoints User--------------------------------------

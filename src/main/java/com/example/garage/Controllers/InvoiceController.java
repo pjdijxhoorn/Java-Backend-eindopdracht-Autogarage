@@ -49,7 +49,9 @@ public class InvoiceController {
         String headerValue = "attachment; filename="+ id+"Invoice_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
 
-        this.invoiceService.export(id,response);
+      /*  this.invoiceService.export(id,response);
+        invoice.setPdfInvoice(this.invoiceService.export);
+*/
     }
 
     @PostMapping("{service_id}")

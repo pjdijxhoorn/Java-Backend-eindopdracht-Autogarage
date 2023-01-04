@@ -44,4 +44,9 @@ public class CarServiceController {
         return ResponseEntity.ok(carServiceService.approvalUser(id, carServiceOutputDto));
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deletecarservice(@PathVariable long id) {
+        return ResponseEntity.ok(carServiceService.deletecarservice(id));
+    }
+
 }

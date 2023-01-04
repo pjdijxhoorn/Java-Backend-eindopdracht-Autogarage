@@ -52,4 +52,9 @@ public class RepairController {
         return ResponseEntity.ok(repairService.SetRepaired(id, repairInputDto));
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteRepair(@PathVariable long id) {
+        return ResponseEntity.ok(repairService.deleteRepair(id));
+    }
+
 }

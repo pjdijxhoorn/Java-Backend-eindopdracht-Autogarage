@@ -2,6 +2,7 @@ package com.example.garage.Services;
 
 import com.example.garage.Dtos.Input.CarInputDto;
 import com.example.garage.Dtos.Output.CarOutputDto;
+import com.example.garage.Exceptions.BadRequestException;
 import com.example.garage.Exceptions.RecordNotFoundException;
 import com.example.garage.Models.*;
 import com.example.garage.Repositories.CarRepository;
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -188,6 +190,11 @@ public class CarService {
             throw new RecordNotFoundException("You are not allowed to do this");
         }else {
             Car updatedcar = car.get();
+            List <CarPart>carpartsinspected = updatedcar.getCarparts();
+            for (CarPart carpart: carpartsinspected){
+                if (!carpart.isChecked()){
+                    throw new BadRequestException("You can not proceed without Inspecting all the carparts!");
+                }}
             updatedcar.setCarstatus(carOutputDto.getCarstatus());
             carRepository.save(updatedcar);
             String email = updatedcar.getUser().getEmail();
@@ -211,13 +218,13 @@ public class CarService {
 
 
     public String deleteCar(long id) {
-        Optional<Car> auto = carRepository.findById(id);
-        if (auto.isEmpty()){
+        Optional<Car> optionalcar = carRepository.findById(id);
+        if (optionalcar.isEmpty()){
             throw new RecordNotFoundException("No car found with the id of : "+ id);
         }
         else {
-            Car car1 = auto.get();
-            carRepository.delete(car1);
+            Car car = optionalcar.get();
+            carRepository.delete(car);
             return "Car Removed successfully";}
     }
     private CarOutputDto transferCarToDto(Car car) {
