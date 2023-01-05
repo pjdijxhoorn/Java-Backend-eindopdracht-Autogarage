@@ -27,7 +27,8 @@ public class CarController {
 
     @GetMapping("")
     public ResponseEntity<Iterable<CarOutputDto>> getAllCars(){
-        return ResponseEntity.ok(carService.getAllCars());
+        return ResponseEntity.ok(
+                carService.getAllCars());
     }
 
     @GetMapping("{id}")
