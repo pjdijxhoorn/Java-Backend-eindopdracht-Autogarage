@@ -8,6 +8,8 @@ import com.example.garage.Models.*;
 import com.example.garage.Repositories.CarRepository;
 import com.example.garage.Repositories.CarpartRepository;
 import com.example.garage.Repositories.UserRepository;
+import static com.example.garage.Utilities.licenseplateValidator.validateLicensePlate;
+
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +33,7 @@ public class CarService {
         this.carpartRepository = carpartRepository;
         this.userRepository = userRepository;
         this.emailService = emailService;
+
     }
 
     public Iterable<CarOutputDto> getAllCars() {
@@ -261,37 +264,5 @@ public class CarService {
 
     }
 
-    private Boolean validateLicensePlate(String licenseplate){
-        if (licenseplate.matches("..-..-..")){
-            // Dutch cars from 1951 to 2005
-            return true;
-        } else if (licenseplate.matches("^[0-9][0-9]-[A-Z][A-Z][A-Z]-[0-9]$")){
-            // Dutch cars from 2005
-            return true;}
-        else if (licenseplate.matches("^[0-9]-[A-Z][A-Z][A-Z]-[0-9][0-9]$")){
-            // Dutch cars from 2009
-            return true;
-        } else if (licenseplate.matches("^[A-Z][A-Z]-[0-9][0-9][0-9]-[A-Z]$")){
-            // Dutch cars from 2006
-            return true;
-        }
-        else if (licenseplate.matches("^[A-Z]-[0-9][0-9][0-9]-[A-Z][A-Z]$")){
-            // Dutch cars from 2008
-            return true;
-        }
-        else if (licenseplate.matches("^[A-Z][A-Z][A-Z]-[0-9][0-9]-[A-Z]$")){
-            // Dutch cars from 2015
-            return true;
-        }
-        else if (licenseplate.matches("^[0-9]-[A-Z][A-Z]-[0-9][0-9][0-9]$")){
-            // Dutch cars from 2016
-            return true;
-        }
-        else if (licenseplate.matches("^[0-9][0-9][0-9]-[A-Z][A-Z]-[0-9]$")){
-            // Dutch cars from 2019
-            return true;
-        }else {
-            return false;
-    }
-    }
+
 }

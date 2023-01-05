@@ -2,7 +2,6 @@ package com.example.garage.Controllers;
 
 import com.example.garage.Dtos.Input.CarInputDto;
 import com.example.garage.Dtos.Output.CarOutputDto;
-import com.example.garage.Dtos.Output.InvoiceOutputDto;
 import com.example.garage.Services.CarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
