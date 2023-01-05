@@ -40,6 +40,8 @@ public class CarService {
             CarOutputDto AutoDto = transferCarToDto(a);
             carOutputDtos.add(AutoDto);
         }
+        Email test = new Email("pjdijxhoorn@hotmail.com", "test", "test", "src/main/resources/garage_logomini.png");
+        this.emailService.sendMailWithAttachment(test);
         return carOutputDtos;
     }
     public CarOutputDto getOneCarByID(long id) {
@@ -198,18 +200,18 @@ public class CarService {
             carRepository.save(updatedcar);
             String email = updatedcar.getUser().getEmail();
             if (updatedcar.getCarstatus() == Carstatus.AWAITING_APPROVAL){
-                this.emailService.sendMessage(//
+                Email approvalmail = new Email(//
                         email,//
                         "repair approval",//
-                        "Your car is awaiting approval for the repairs."//
-                    );
+                        "Your car is awaiting approval for the repairs.");
+                this.emailService.sendSimpleMail(approvalmail);
                 }
             if (updatedcar.getCarstatus() == Carstatus.READY){
-                this.emailService.sendMessage(//
+                Email readymail = new Email(//
                         email,//
                         "Your car is ready",//
-                        "Your car is awaiting pickup thank you for choosing transparant garage."//
-                );
+                        "Your car is awaiting pickup thank you for choosing transparant garage.");
+                this.emailService.sendSimpleMail(readymail);
             }
             return transferCarToDto(updatedcar);
             }

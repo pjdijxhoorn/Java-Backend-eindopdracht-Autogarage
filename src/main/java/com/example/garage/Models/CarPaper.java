@@ -22,6 +22,11 @@ public class CarPaper {
     @GeneratedValue(generator = "ID_GENERATOR")
     private Long id;
 
+    private String licenseplate;
+
+    @Lob
+    public byte [] carPapers;
+
     //relations.........................................
     @ManyToOne
     @JsonIgnore
