@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.mail.internet.MimeBodyPart;
+import java.io.File;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -41,8 +41,7 @@ public class CarService {
             CarOutputDto AutoDto = transferCarToDto(a);
             carOutputDtos.add(AutoDto);
         }
-        Email test = new Email("pjdijxhoorn@hotmail.com", "test", "test", "src/main/resources/garage_logomini.png");
-        this.emailService.sendMailWithAttachment(test);
+
         return carOutputDtos;
     }
     public CarOutputDto getOneCarByID(long id) {

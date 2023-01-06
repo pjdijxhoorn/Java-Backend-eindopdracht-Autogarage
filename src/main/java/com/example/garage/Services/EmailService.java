@@ -47,39 +47,28 @@ public class EmailService implements EmailRepository {
 
 
     public String
-    sendMailWithAttachment(Email email)
-    {
-        MimeMessage mimeMessage
-                = javaMailSender.createMimeMessage();
+    sendMailWithAttachment(Email email) {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper;
 
         try {
-
-            mimeMessageHelper
-                    = new MimeMessageHelper(mimeMessage, true);
+            mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
             mimeMessageHelper.setFrom(sender);
             mimeMessageHelper.setTo(email.getRecipient());
             mimeMessageHelper.setText(email.getMsgBody());
-            mimeMessageHelper.setSubject(
-                    email.getSubject());
+            mimeMessageHelper.setSubject(email.getSubject());
 
+            // Adding the attachment
+            FileSystemResource file = new FileSystemResource(new File(email.getAttachment()));
+            mimeMessageHelper.addAttachment(file.getFilename(), file);
 
-            FileSystemResource file
-                    = new FileSystemResource(
-                    new File(email.getAttachment()));
-
-            mimeMessageHelper.addAttachment(
-                    file.getFilename(), file);
-
+            // Sending the mail
             javaMailSender.send(mimeMessage);
             return "Mail sent Successfully";
         }
-
-        // Catch block to handle MessagingException
         catch (MessagingException e) {
-
-            // Display message when exception occurred
             return "Error while sending mail!!!";
         }
     }
 }
+
