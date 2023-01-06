@@ -24,6 +24,8 @@ public class Invoice {
     private boolean payed;
     private LocalDate repairDate;
 
+    @Lob
+    public byte[] pdfinvoice;
 
     public static final double btw = 21.0;
     public static final double APKCHECK = 30.00;

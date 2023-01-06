@@ -52,7 +52,6 @@ public class RepairService {
             String carpartname = String.valueOf(carpartx.getCarpartname());
             if (Objects.equals(carpartname, carpart)){
                carpart1 = carpartRepository.getById(carpartx.getId());
-               System.out.println(carpartname + carpart+ carpart1.getId());
             }
          }
          Repair newrepair = transferDtotoRepair(repairInputDto);
@@ -78,6 +77,19 @@ public class RepairService {
          }
       }
    }
+   public String deleteRepair(long id) {
+      Optional<Repair> optionalrepair = repairRepository.findById(id);
+      if (optionalrepair.isEmpty()){
+         throw new RecordNotFoundException("No repair found with the id of : "+ id);
+      }
+      else {
+         Repair repair = optionalrepair.get();
+         repairRepository.delete(repair);
+         return "Repair Removed successfully";}
+   }
+
+
+
 
    private RepairOutputDto transferRepairtoDto(Repair repair){
       RepairOutputDto repairDto = new RepairOutputDto();

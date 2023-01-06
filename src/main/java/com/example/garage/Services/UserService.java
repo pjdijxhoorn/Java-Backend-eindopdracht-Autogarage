@@ -80,6 +80,7 @@ public class UserService {
         if(validatePassword(password)){
             User user = userRepository.findById(username).get();
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            user.setEmail(userDto.getEmail());
             userRepository.save(user);
         }else {
             throw new InvalidPasswordException("Your password must contain:\n At least 6 characters, 1 uppercase letter, 1 lowercase letter, 1 special character and may not contain any whitespaces");

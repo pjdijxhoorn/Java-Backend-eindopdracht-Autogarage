@@ -44,10 +44,13 @@ public class User {
     private Set<Authority> authorities = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
-    List<Car> cars;
+    private List<Car> cars;
 
     @OneToMany(mappedBy = "user")
-    List<Invoice> invoices;
+    private List<Invoice> invoices;
+
+    @OneToMany(mappedBy = "user")
+    private List<CarPaper> carpapers;
 
 
     public Set<Authority> getAuthorities() { return authorities; }

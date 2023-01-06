@@ -62,6 +62,7 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.GET, "/cars/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/cars/licenseplate/{licenseplate}").permitAll()
                 .antMatchers(HttpMethod.GET, "/cars/user").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/cars/user/status").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/cars").hasRole("DESK")
                 .antMatchers(HttpMethod.PUT, "/cars/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/cars/{id}/statusdesk").hasRole("DESK")
@@ -72,20 +73,29 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.GET, "/invoices").permitAll()
                 .antMatchers(HttpMethod.GET, "/invoices/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/invoices/user").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/invoices/{id}/getpdfinvoice").permitAll()
                 .antMatchers(HttpMethod.POST, "/invoices/{service_id}").permitAll()
                 .antMatchers(HttpMethod.PUT, "/invoices/{id}/payed").hasRole("DESK")
-                .antMatchers(HttpMethod.PUT, "/invoices/{id}/").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/invoices/{id}/generateInvoicePdf").permitAll()
+                .antMatchers(HttpMethod.PUT, "/invoices/{id}/sendinvoice").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/invoices/{id}").permitAll()
 
+
                 //----------------------------------------Endpoints Service--------------------------------------
+                .antMatchers(HttpMethod.GET, "/services").permitAll()
+                .antMatchers(HttpMethod.GET, "/services/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/services/user").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/services/{car_id}").permitAll()
                 .antMatchers(HttpMethod.PUT, "/services/{id}/mechanicdone").permitAll()
-                .antMatchers(HttpMethod.GET, "/services").permitAll()
+                .antMatchers(HttpMethod.PUT, "/services/{id}/approvaluser").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/services/{id}").permitAll()
+
 
                 //----------------------------------------Endpoints Repair--------------------------------------
                 .antMatchers(HttpMethod.GET, "/repairs/{id}").permitAll()
                 .antMatchers(HttpMethod.POST, "/repairs/{carpart_id}/{service_id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/repairs/{id}/setrepaired").hasRole("MECHANIC")
+                .antMatchers(HttpMethod.DELETE, "/repairs/{id}").permitAll()
 
 
                 //----------------------------------------Endpoints User--------------------------------------
@@ -97,6 +107,13 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.PUT,"/users/{username}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE,"/users/{username}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE,"/users/{username}/authorities/{authority}").hasRole("ADMIN")
+
+                //----------------------------------------Endpoints Repair--------------------------------------
+                .antMatchers(HttpMethod.GET, "/carparts/{car_id}").permitAll()
+                .antMatchers(HttpMethod.PUT, "/carparts/{car_id}/inspection/{carpart}").permitAll()
+
+                //----------------------------------------Endpoints Repair--------------------------------------
+                .antMatchers(HttpMethod.GET, "/carpapers/upload/{user_id}").permitAll()
 
                 //----------------------------------------Endpoints Auth--------------------------------------
                 .antMatchers(HttpMethod.GET,"/authenticated").authenticated()

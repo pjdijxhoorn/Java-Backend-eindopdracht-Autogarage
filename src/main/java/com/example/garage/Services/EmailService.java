@@ -1,52 +1,74 @@
 package com.example.garage.Services;
 
-import com.lowagie.text.Document;
+import java.io.File;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
+import com.example.garage.Models.Email;
+import com.example.garage.Repositories.EmailRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.activation.DataSource;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.io.File;
-
-
+// Annotation
 @Service
-public class EmailService {
 
-   private final JavaMailSender emailsender;
+public class EmailService implements EmailRepository {
 
-   public EmailService(JavaMailSender emailsender){
-       this.emailsender = emailsender;
-   }
+    @Autowired private JavaMailSender javaMailSender;
 
-   void sendMessage(String to, String subject, String text){
-       SimpleMailMessage message = new SimpleMailMessage();
-       message.setFrom("garagetransparant@gmail.com");
-       message.setTo(to);
-       message.setSubject(subject);
-       message.setText(text);
-       this.emailsender.send(message);
-   }
-
-    /*public void sendMessageWithAttach(String to, String subject, String text, String fileToAttach) throws MessagingException {
-        MimeMessage message = emailsender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-        helper.setFrom("garagetransparant@gmail.com");
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(text);
-        FileSystemResource file = new FileSystemResource(new File(fileToAttach));
-        helper.addAttachment("Invoice", file);
+    @Value("${spring.mail.username}") private String sender;
 
 
-        this.emailsender.send(message);
-    }*/
+    public String sendSimpleMail(Email email)
+    {
+        try {
+            SimpleMailMessage mailMessage
+                    = new SimpleMailMessage();
+
+            mailMessage.setFrom(sender);
+            mailMessage.setTo(email.getRecipient());
+            mailMessage.setText(email.getMsgBody());
+            mailMessage.setSubject(email.getSubject());
+
+            javaMailSender.send(mailMessage);
+            return "Mail Sent Successfully...";
+        }
+
+        // Catch block to handle the exceptions
+        catch (Exception e) {
+            return "Error while Sending Mail";
+        }
+    }
 
 
+    public String
+    sendMailWithAttachment(Email email) {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper;
+
+        try {
+            mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            mimeMessageHelper.setFrom(sender);
+            mimeMessageHelper.setTo(email.getRecipient());
+            mimeMessageHelper.setText(email.getMsgBody());
+            mimeMessageHelper.setSubject(email.getSubject());
+
+            // Adding the attachment
+            FileSystemResource file = new FileSystemResource(new File(email.getAttachment()));
+            mimeMessageHelper.addAttachment(file.getFilename(), file);
+
+            // Sending the mail
+            javaMailSender.send(mimeMessage);
+            return "Mail sent Successfully";
+        }
+        catch (MessagingException e) {
+            return "Error while sending mail!!!";
+        }
+    }
 }
+

@@ -2,7 +2,6 @@ package com.example.garage.Controllers;
 
 import com.example.garage.Dtos.Input.CarInputDto;
 import com.example.garage.Dtos.Output.CarOutputDto;
-import com.example.garage.Dtos.Output.InvoiceOutputDto;
 import com.example.garage.Services.CarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +27,8 @@ public class CarController {
 
     @GetMapping("")
     public ResponseEntity<Iterable<CarOutputDto>> getAllCars(){
-        return ResponseEntity.ok(carService.getAllCars());
+        return ResponseEntity.ok(
+                carService.getAllCars());
     }
 
     @GetMapping("{id}")
@@ -44,6 +44,10 @@ public class CarController {
     @GetMapping("/user")
     public ResponseEntity<Iterable<CarOutputDto>> getAllCarsfromUser(){
         return ResponseEntity.ok(carService.getAllCarsfromUser());
+    }
+    @GetMapping("/user/status")
+    public ResponseEntity<String> getAllCarsStatusfromUser(){
+        return ResponseEntity.ok(carService.getAllCarsStatusfromUser());
     }
 
     @PostMapping("")

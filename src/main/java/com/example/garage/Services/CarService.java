@@ -2,20 +2,22 @@ package com.example.garage.Services;
 
 import com.example.garage.Dtos.Input.CarInputDto;
 import com.example.garage.Dtos.Output.CarOutputDto;
+import com.example.garage.Exceptions.BadRequestException;
 import com.example.garage.Exceptions.RecordNotFoundException;
 import com.example.garage.Models.*;
 import com.example.garage.Repositories.CarRepository;
 import com.example.garage.Repositories.CarpartRepository;
 import com.example.garage.Repositories.UserRepository;
+import static com.example.garage.Utilities.licenseplateValidator.validateLicensePlate;
+
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-
-
 
 @Service
 public class CarService {
@@ -29,8 +31,8 @@ public class CarService {
         this.carpartRepository = carpartRepository;
         this.userRepository = userRepository;
         this.emailService = emailService;
-    }
 
+    }
 
     public Iterable<CarOutputDto> getAllCars() {
         ArrayList<CarOutputDto> carOutputDtos = new ArrayList<>();
@@ -39,6 +41,7 @@ public class CarService {
             CarOutputDto AutoDto = transferCarToDto(a);
             carOutputDtos.add(AutoDto);
         }
+
         return carOutputDtos;
     }
     public CarOutputDto getOneCarByID(long id) {
@@ -59,7 +62,7 @@ public class CarService {
             return transferCarToDto(car);}
     }
     public Iterable<CarOutputDto> getAllCarsfromUser() {
-        String currentUserName = new String();
+        String currentUserName;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             currentUserName = authentication.getName();
@@ -73,6 +76,30 @@ public class CarService {
                     carOutputDtos.add(carDto);
                 }
                 return carOutputDtos;
+            }else {
+                throw new RecordNotFoundException("this users seems to have no values");
+            }
+        }
+        throw new RecordNotFoundException("no user is logged in at the moment");
+    }
+
+    public String getAllCarsStatusfromUser() {
+        String currentUserName;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            currentUserName = authentication.getName();
+            Optional<User> currentuser = userRepository.findById(currentUserName);
+            if (currentuser.isPresent()){
+                StringBuilder status = new StringBuilder();
+                User user = currentuser.get();
+                Iterable<Car> allcars = carRepository.findByUser(user);
+                for (Car a: allcars){
+                   status.append(a.getLicenseplate());
+                   status.append(" STATUS : ");
+                   status.append(a.getCarstatus());
+                   status.append("\n");
+                }
+                return status.toString();
             }else {
                 throw new RecordNotFoundException("this users seems to have no values");
             }
@@ -164,36 +191,40 @@ public class CarService {
             throw new RecordNotFoundException("You are not allowed to do this");
         }else {
             Car updatedcar = car.get();
+            List <CarPart>carpartsinspected = updatedcar.getCarparts();
+            for (CarPart carpart: carpartsinspected){
+                if (!carpart.isChecked()){
+                    throw new BadRequestException("You can not proceed without Inspecting all the carparts!");
+                }}
             updatedcar.setCarstatus(carOutputDto.getCarstatus());
             carRepository.save(updatedcar);
             String email = updatedcar.getUser().getEmail();
             if (updatedcar.getCarstatus() == Carstatus.AWAITING_APPROVAL){
-                this.emailService.sendMessage(//
+                Email approvalmail = new Email(//
                         email,//
                         "repair approval",//
-                        "Your car is awaiting approval for the repairs."//
-                    );
+                        "Your car is awaiting approval for the repairs.");
+                this.emailService.sendSimpleMail(approvalmail);
                 }
             if (updatedcar.getCarstatus() == Carstatus.READY){
-                this.emailService.sendMessage(//
+                Email readymail = new Email(//
                         email,//
                         "Your car is ready",//
-                        "Your car is awaiting pickup thank you for choosing transparant garage."//
-                );
+                        "Your car is awaiting pickup thank you for choosing transparant garage.");
+                this.emailService.sendSimpleMail(readymail);
             }
             return transferCarToDto(updatedcar);
             }
         }
 
-
     public String deleteCar(long id) {
-        Optional<Car> auto = carRepository.findById(id);
-        if (auto.isEmpty()){
+        Optional<Car> optionalcar = carRepository.findById(id);
+        if (optionalcar.isEmpty()){
             throw new RecordNotFoundException("No car found with the id of : "+ id);
         }
         else {
-            Car car1 = auto.get();
-            carRepository.delete(car1);
+            Car car = optionalcar.get();
+            carRepository.delete(car);
             return "Car Removed successfully";}
     }
     private CarOutputDto transferCarToDto(Car car) {
@@ -214,7 +245,6 @@ public class CarService {
         if(car.getUser() != null) {
             autoDto.setUser(car.getUser());
         }
-
         return autoDto;
     }
 
@@ -232,37 +262,4 @@ public class CarService {
     }
 
 
-    private Boolean validateLicensePlate(String licenseplate){
-        if (licenseplate.matches("..-..-..")){
-            // Dutch cars from 1951 to 2005
-            return true;
-        } else if (licenseplate.matches("^[0-9][0-9]-[A-Z][A-Z][A-Z]-[0-9]$")){
-            // Dutch cars from 2005
-            return true;}
-        else if (licenseplate.matches("^[0-9]-[A-Z][A-Z][A-Z]-[0-9][0-9]$")){
-            // Dutch cars from 2009
-            return true;
-        } else if (licenseplate.matches("^[A-Z][A-Z]-[0-9][0-9][0-9]-[A-Z]$")){
-            // Dutch cars from 2006
-            return true;
-        }
-        else if (licenseplate.matches("^[A-Z]-[0-9][0-9][0-9]-[A-Z][A-Z]$")){
-            // Dutch cars from 2008
-            return true;
-        }
-        else if (licenseplate.matches("^[A-Z][A-Z][A-Z]-[0-9][0-9]-[A-Z]$")){
-            // Dutch cars from 2015
-            return true;
-        }
-        else if (licenseplate.matches("^[0-9]-[A-Z][A-Z]-[0-9][0-9][0-9]$")){
-            // Dutch cars from 2016
-            return true;
-        }
-        else if (licenseplate.matches("^[0-9][0-9][0-9]-[A-Z][A-Z]-[0-9]$")){
-            // Dutch cars from 2019
-            return true;
-        }else {
-            return false;
-    }
-    }
 }

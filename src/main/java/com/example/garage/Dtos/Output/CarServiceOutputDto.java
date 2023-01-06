@@ -3,6 +3,7 @@ package com.example.garage.Dtos.Output;
 import com.example.garage.Models.Car;
 import com.example.garage.Models.Invoice;
 import com.example.garage.Models.Repair;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ public class CarServiceOutputDto {
     //relations.........................................
 
     List<Repair> repairs;
+    @JsonIgnoreProperties(value = { "carparts","invoices", "carServices","invoices"})
     private Car car;
     private Invoice invoice;
 
