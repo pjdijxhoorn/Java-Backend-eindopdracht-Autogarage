@@ -92,7 +92,7 @@ public class SpringSecurityConfig {
 
 
                 //----------------------------------------Endpoints Repair--------------------------------------
-                .antMatchers(HttpMethod.GET, "/repairs/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/repairs/{licenseplate}").permitAll()
                 .antMatchers(HttpMethod.POST, "/repairs/{carpart_id}/{service_id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/repairs/{id}/setrepaired").hasRole("MECHANIC")
                 .antMatchers(HttpMethod.DELETE, "/repairs/{id}").permitAll()

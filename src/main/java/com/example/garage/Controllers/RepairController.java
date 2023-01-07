@@ -25,9 +25,9 @@ public class RepairController {
     }
 
 
-    @GetMapping("{id}")
-    public ResponseEntity<RepairOutputDto> getOneCarByID(@PathVariable long id) {
-        return ResponseEntity.ok(repairService.getOneRepairByID(id));
+    @GetMapping("{licenseplate}")
+    public ResponseEntity<Iterable<RepairOutputDto>> getAllRepairsFromOneCar(@PathVariable String licenseplate) {
+        return ResponseEntity.ok(repairService.getAllRepairsFromOneCar(licenseplate));
     }
 
     @PostMapping("/{carpart}/{service_id}")
