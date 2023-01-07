@@ -21,6 +21,6 @@ public class CarOutputDto {
     private Carstatus carstatus;
     List<CarPart> carparts;
 
-    @JsonIgnoreProperties(value = { "password","apikey", "authorities", "cars"})
+    @JsonIgnoreProperties(value = {"password", "apikey", "authorities", "cars"})
     private User user;
 }

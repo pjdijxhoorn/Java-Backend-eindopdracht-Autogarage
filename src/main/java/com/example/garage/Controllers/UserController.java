@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping(value = "")
-    public ResponseEntity<UserDto> createKlant(@RequestBody UserDto dto) {;
+    public ResponseEntity<UserDto> createKlant(@RequestBody UserDto dto) {
 
         String newUsername = userService.createUser(dto);
         userService.addAuthority(newUsername, "ROLE_USER");

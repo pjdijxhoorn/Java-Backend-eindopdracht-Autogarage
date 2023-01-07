@@ -9,7 +9,6 @@ import lombok.Setter;
 @Getter
 public class RepairInputDto {
 
-
     private double repairCost;
     private String notes;
     private CarPart carpart;

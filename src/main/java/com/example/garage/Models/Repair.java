@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="repairs")
+@Table(name = "repairs")
 public class Repair {
     //variables.........................................
     @Id
@@ -35,6 +35,4 @@ public class Repair {
     @ManyToOne
     @JsonIgnore
     private CarService carservice;
-
-
 }

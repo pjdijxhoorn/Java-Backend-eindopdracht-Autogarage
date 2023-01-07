@@ -1,10 +1,8 @@
 package com.example.garage.Services;
 
 
-import com.example.garage.Dtos.Output.CarOutputDto;
 import com.example.garage.Exceptions.BadRequestException;
 import com.example.garage.Exceptions.RecordNotFoundException;
-import com.example.garage.Models.Car;
 import com.example.garage.Models.CarPaper;
 import com.example.garage.Models.User;
 import com.example.garage.Repositories.CarPaperRepository;
@@ -15,10 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import static com.example.garage.Utilities.licenseplateValidator.validateLicensePlate;
 
 import java.io.IOException;
-import java.util.Optional;
+
+import static com.example.garage.Utilities.licenseplateValidator.validateLicensePlate;
 
 @Service
 public class CarpaperService {
@@ -30,6 +28,7 @@ public class CarpaperService {
         this.carPaperRepository = carPaperRepository;
         this.userRepository = userRepository;
     }
+
     public ResponseEntity<byte[]> getCarPapersById(long id) {
         CarPaper carPaper = carPaperRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("No car papers found with id: " + id));
@@ -47,10 +46,9 @@ public class CarpaperService {
         if (!validateLicensePlate(licenseplate))
             throw new RecordNotFoundException("This is not a valid Dutch license plate");
         CarPaper testcarPaper = carPaperRepository.findBylicenseplate(licenseplate);
-        if(testcarPaper != null){
+        if (testcarPaper != null) {
             throw new BadRequestException("this licenseplate is already registerd.");
-        }
-        else {
+        } else {
             CarPaper carPaper = new CarPaper();
             carPaper.setLicenseplate(licenseplate);
             carPaper.setUser(user);

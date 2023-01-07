@@ -1,9 +1,5 @@
 package com.example.garage.Services;
 
-import java.io.File;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
 import com.example.garage.Models.Email;
 import com.example.garage.Repositories.EmailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +10,23 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.File;
+
 // Annotation
 @Service
 
 public class EmailService implements EmailRepository {
 
-    @Autowired private JavaMailSender javaMailSender;
+    @Autowired
+    private JavaMailSender javaMailSender;
 
-    @Value("${spring.mail.username}") private String sender;
+    @Value("${spring.mail.username}")
+    private String sender;
 
 
-    public String sendSimpleMail(Email email)
-    {
+    public String sendSimpleMail(Email email) {
         try {
             SimpleMailMessage mailMessage
                     = new SimpleMailMessage();
@@ -65,8 +66,7 @@ public class EmailService implements EmailRepository {
             // Sending the mail
             javaMailSender.send(mimeMessage);
             return "Mail sent Successfully";
-        }
-        catch (MessagingException e) {
+        } catch (MessagingException e) {
             return "Error while sending mail!!!";
         }
     }

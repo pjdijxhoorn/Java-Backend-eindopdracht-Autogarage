@@ -16,13 +16,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="cars")
+@Table(name = "cars")
 public class Car {
     //variables.........................................
     @Id
     @GeneratedValue(generator = "ID_GENERATOR")
     private Long id;
-    @NotNull(message = "This isnt allowed to be Null " )
+    @NotNull(message = "This isnt allowed to be Null ")
     private String licenseplate;
     private String brand;
     @Enumerated(EnumType.STRING)

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-
 import java.net.URI;
 
 import static com.example.garage.Utilities.Utilities.getErrorString;
@@ -21,12 +20,12 @@ public class CarController {
 
     private final CarService carService;
 
-    public CarController(CarService carService){
+    public CarController(CarService carService) {
         this.carService = carService;
     }
 
     @GetMapping("")
-    public ResponseEntity<Iterable<CarOutputDto>> getAllCars(){
+    public ResponseEntity<Iterable<CarOutputDto>> getAllCars() {
         return ResponseEntity.ok(
                 carService.getAllCars());
     }
@@ -37,21 +36,22 @@ public class CarController {
     }
 
     @GetMapping("/licenseplate/{licenseplate}")
-    public  ResponseEntity<CarOutputDto> getOneCarByLincensePlate(@PathVariable String licenseplate){
+    public ResponseEntity<CarOutputDto> getOneCarByLincensePlate(@PathVariable String licenseplate) {
         return ResponseEntity.ok(carService.getOneCarByLincensePlate(licenseplate));
     }
 
     @GetMapping("/user")
-    public ResponseEntity<Iterable<CarOutputDto>> getAllCarsfromUser(){
+    public ResponseEntity<Iterable<CarOutputDto>> getAllCarsfromUser() {
         return ResponseEntity.ok(carService.getAllCarsfromUser());
     }
+
     @GetMapping("/user/status")
-    public ResponseEntity<String> getAllCarsStatusfromUser(){
+    public ResponseEntity<String> getAllCarsStatusfromUser() {
         return ResponseEntity.ok(carService.getAllCarsStatusfromUser());
     }
 
     @PostMapping("")
-    public ResponseEntity<String> createCar(@Valid @RequestBody CarInputDto carInputDto, BindingResult br){
+    public ResponseEntity<String> createCar(@Valid @RequestBody CarInputDto carInputDto, BindingResult br) {
         if (br.hasErrors()) {
             String errorString = getErrorString(br);
             return new ResponseEntity<>(errorString, HttpStatus.BAD_REQUEST);
@@ -66,18 +66,18 @@ public class CarController {
         }
     }
 
-    @PutMapping("{id}/statusdesk")
-    public ResponseEntity<CarOutputDto> updateCarStatusDesk(@PathVariable long id, @RequestBody CarOutputDto carOutputDto){
-        return ResponseEntity.ok(carService.updateCarStatusDesk(id, carOutputDto));
+    @PutMapping("statusdesk/{licenseplate}")
+    public ResponseEntity<CarOutputDto> updateCarStatusDesk(@PathVariable String licenseplate, @RequestBody CarOutputDto carOutputDto) {
+        return ResponseEntity.ok(carService.updateCarStatusDesk(licenseplate, carOutputDto));
     }
 
-    @PutMapping("{id}/statusmechanic")
-    public ResponseEntity<CarOutputDto> updateCarStatusMechanic(@PathVariable long id, @RequestBody CarOutputDto carOutputDto){
-        return ResponseEntity.ok(carService.updateCarStatusMechanic(id, carOutputDto));
+    @PutMapping("statusmechanic/{licenseplate}")
+    public ResponseEntity<CarOutputDto> updateCarStatusMechanic(@PathVariable String licenseplate, @RequestBody CarOutputDto carOutputDto) {
+        return ResponseEntity.ok(carService.updateCarStatusMechanic(licenseplate, carOutputDto));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<CarOutputDto> updateCar(@PathVariable long id, @RequestBody CarOutputDto carOutputDto){
+    public ResponseEntity<CarOutputDto> updateCar(@PathVariable long id, @RequestBody CarOutputDto carOutputDto) {
         return ResponseEntity.ok(carService.updateCar(id, carOutputDto));
     }
 

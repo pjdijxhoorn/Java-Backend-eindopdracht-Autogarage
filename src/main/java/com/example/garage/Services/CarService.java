@@ -8,8 +8,6 @@ import com.example.garage.Models.*;
 import com.example.garage.Repositories.CarRepository;
 import com.example.garage.Repositories.CarpartRepository;
 import com.example.garage.Repositories.UserRepository;
-import static com.example.garage.Utilities.licenseplateValidator.validateLicensePlate;
-
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.garage.Utilities.licenseplateValidator.validateLicensePlate;
+
 @Service
 public class CarService {
 
@@ -26,57 +26,60 @@ public class CarService {
     private final CarpartRepository carpartRepository;
     private final UserRepository userRepository;
     private final EmailService emailService;
+
     public CarService(CarRepository carRepository, CarpartRepository carpartRepository, UserRepository userRepository, EmailService emailService) {
         this.carRepository = carRepository;
         this.carpartRepository = carpartRepository;
         this.userRepository = userRepository;
         this.emailService = emailService;
-
     }
 
     public Iterable<CarOutputDto> getAllCars() {
         ArrayList<CarOutputDto> carOutputDtos = new ArrayList<>();
         Iterable<Car> allcars = carRepository.findAll();
-        for (Car a: allcars){
+        for (Car a : allcars) {
             CarOutputDto AutoDto = transferCarToDto(a);
             carOutputDtos.add(AutoDto);
         }
 
         return carOutputDtos;
     }
+
     public CarOutputDto getOneCarByID(long id) {
         Optional<Car> car = carRepository.findById(id);
-        if (car.isEmpty()){
-            throw new RecordNotFoundException("no car found with id: "+ id);
-        }else {
+        if (car.isEmpty()) {
+            throw new RecordNotFoundException("no car found with id: " + id);
+        } else {
             Car car1 = car.get();
             return transferCarToDto(car1);
         }
     }
+
     public CarOutputDto getOneCarByLincensePlate(String licenseplate) {
         Car car = carRepository.findBylicenseplate(licenseplate);
-        if (car == null){
-            throw new RecordNotFoundException("no car found with license-plate: "+ licenseplate);
+        if (car == null) {
+            throw new RecordNotFoundException("no car found with license-plate: " + licenseplate);
+        } else {
+            return transferCarToDto(car);
         }
-        else {
-            return transferCarToDto(car);}
     }
+
     public Iterable<CarOutputDto> getAllCarsfromUser() {
         String currentUserName;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             currentUserName = authentication.getName();
             Optional<User> currentuser = userRepository.findById(currentUserName);
-            if (currentuser.isPresent()){
+            if (currentuser.isPresent()) {
                 User user = currentuser.get();
                 ArrayList<CarOutputDto> carOutputDtos = new ArrayList<>();
                 Iterable<Car> allcars = carRepository.findByUser(user);
-                for (Car a: allcars){
+                for (Car a : allcars) {
                     CarOutputDto carDto = transferCarToDto(a);
                     carOutputDtos.add(carDto);
                 }
                 return carOutputDtos;
-            }else {
+            } else {
                 throw new RecordNotFoundException("this users seems to have no values");
             }
         }
@@ -89,18 +92,18 @@ public class CarService {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             currentUserName = authentication.getName();
             Optional<User> currentuser = userRepository.findById(currentUserName);
-            if (currentuser.isPresent()){
+            if (currentuser.isPresent()) {
                 StringBuilder status = new StringBuilder();
                 User user = currentuser.get();
                 Iterable<Car> allcars = carRepository.findByUser(user);
-                for (Car a: allcars){
-                   status.append(a.getLicenseplate());
-                   status.append(" STATUS : ");
-                   status.append(a.getCarstatus());
-                   status.append("\n");
+                for (Car a : allcars) {
+                    status.append(a.getLicenseplate());
+                    status.append(" STATUS : ");
+                    status.append(a.getCarstatus());
+                    status.append("\n");
                 }
                 return status.toString();
-            }else {
+            } else {
                 throw new RecordNotFoundException("this users seems to have no values");
             }
         }
@@ -116,11 +119,11 @@ public class CarService {
             throw new RecordNotFoundException("This is not a valid Dutch license plate");
         // next if statement checks if there is already a car with that license-plate
         Car car = carRepository.findBylicenseplate(licenseplate);
-        if (car == null){
+        if (car == null) {
             Car newcar = transferDtotoCar(carInputDto);
             Car savedcar = carRepository.save(newcar);
             // voeg onderdelen toe met lege waarden
-            CarPart Tires = new CarPart(CarpartName.TIRES,"",false);
+            CarPart Tires = new CarPart(CarpartName.TIRES, "", false);
             CarPart newTires = carpartRepository.save(Tires);
             newTires.setCar(savedcar);
 
@@ -146,17 +149,18 @@ public class CarService {
 
             savedcar = carRepository.save(savedcar);
             return savedcar.getId();
-        } else if (car.getLicenseplate().equals( licenseplate)) {
+        } else if (car.getLicenseplate().equals(licenseplate)) {
             throw new RecordNotFoundException("This: " + licenseplate + " license-plate is already registered. ");
         } else {
             throw new RecordNotFoundException("Something went wrong");
         }
     }
-    public CarOutputDto updateCar (long id, CarOutputDto carOutputDto){
+
+    public CarOutputDto updateCar(long id, CarOutputDto carOutputDto) {
         Optional<Car> car = carRepository.findById(id);
-        if (car.isEmpty()){
-            throw new RecordNotFoundException("no car with id: " + id );
-        }else {
+        if (car.isEmpty()) {
+            throw new RecordNotFoundException("no car with id: " + id);
+        } else {
             Car updatedcar = car.get();
             updatedcar.setBrand(carOutputDto.getBrand());
             updatedcar.setLicenseplate(carOutputDto.getLicenseplate());
@@ -167,88 +171,89 @@ public class CarService {
 
     }
 
-    public CarOutputDto updateCarStatusDesk(long id, CarOutputDto carOutputDto){
-        Optional<Car> car = carRepository.findById(id);
+
+    public CarOutputDto updateCarStatusDesk(String licenseplate, CarOutputDto carOutputDto) {
+        Car car = carRepository.findBylicenseplate(licenseplate);
         Carstatus status = carOutputDto.getCarstatus();
-        if (car.isEmpty()) {
-            throw new RecordNotFoundException("no car with id: " + id);
-        }else if (status != Carstatus.CHECKED_IN && status != Carstatus.PICKED_UP){
+        if (car == null) {
+            throw new RecordNotFoundException("no car found with license-plate: " + licenseplate);
+        } else if (status != Carstatus.CHECKED_IN && status != Carstatus.PICKED_UP) {
             throw new RecordNotFoundException("You are not allowed to do this");
-        }else {
-            Car updatedcar = car.get();
-            updatedcar.setCarstatus(carOutputDto.getCarstatus());
-            carRepository.save(updatedcar);
-            return transferCarToDto(updatedcar);
-    }
+        } else {
+            car.setCarstatus(carOutputDto.getCarstatus());
+            carRepository.save(car);
+            return transferCarToDto(car);
+        }
     }
 
-    public CarOutputDto updateCarStatusMechanic(long id, CarOutputDto carOutputDto){
-        Optional<Car> car = carRepository.findById(id);
+    public CarOutputDto updateCarStatusMechanic(String licenseplate, CarOutputDto carOutputDto) {
+        Car car = carRepository.findBylicenseplate(licenseplate);
         Carstatus status = carOutputDto.getCarstatus();
-        if (car.isEmpty()) {
-            throw new RecordNotFoundException("no car with id: " + id);
-        }else if (status != Carstatus.INSPECTING && status != Carstatus.AWAITING_APPROVAL && status != Carstatus.REPAIR && status != Carstatus.WASHING && status != Carstatus.READY){
+        if (car == null) {
+            throw new RecordNotFoundException("no car found with license-plate: " + licenseplate);
+        } else if (status != Carstatus.INSPECTING && status != Carstatus.AWAITING_APPROVAL && status != Carstatus.REPAIR && status != Carstatus.WASHING && status != Carstatus.READY) {
             throw new RecordNotFoundException("You are not allowed to do this");
-        }else {
-            Car updatedcar = car.get();
-            List <CarPart>carpartsinspected = updatedcar.getCarparts();
-            for (CarPart carpart: carpartsinspected){
-                if (!carpart.isChecked()){
+        } else {
+            List<CarPart> carpartsinspected = car.getCarparts();
+            for (CarPart carpart : carpartsinspected) {
+                if (!carpart.isChecked()) {
                     throw new BadRequestException("You can not proceed without Inspecting all the carparts!");
-                }}
-            updatedcar.setCarstatus(carOutputDto.getCarstatus());
-            carRepository.save(updatedcar);
-            String email = updatedcar.getUser().getEmail();
-            if (updatedcar.getCarstatus() == Carstatus.AWAITING_APPROVAL){
+                }
+            }
+            car.setCarstatus(carOutputDto.getCarstatus());
+            carRepository.save(car);
+            String email = car.getUser().getEmail();
+            if (car.getCarstatus() == Carstatus.AWAITING_APPROVAL) {
                 Email approvalmail = new Email(//
                         email,//
                         "repair approval",//
                         "Your car is awaiting approval for the repairs.");
                 this.emailService.sendSimpleMail(approvalmail);
-                }
-            if (updatedcar.getCarstatus() == Carstatus.READY){
+            }
+            if (car.getCarstatus() == Carstatus.READY) {
                 Email readymail = new Email(//
                         email,//
                         "Your car is ready",//
                         "Your car is awaiting pickup thank you for choosing transparant garage.");
                 this.emailService.sendSimpleMail(readymail);
             }
-            return transferCarToDto(updatedcar);
-            }
+            return transferCarToDto(car);
         }
+    }
 
     public String deleteCar(long id) {
         Optional<Car> optionalcar = carRepository.findById(id);
-        if (optionalcar.isEmpty()){
-            throw new RecordNotFoundException("No car found with the id of : "+ id);
-        }
-        else {
+        if (optionalcar.isEmpty()) {
+            throw new RecordNotFoundException("No car found with the id of : " + id);
+        } else {
             Car car = optionalcar.get();
             carRepository.delete(car);
-            return "Car Removed successfully";}
+            return "Car Removed successfully";
+        }
     }
+
     private CarOutputDto transferCarToDto(Car car) {
         CarOutputDto autoDto = new CarOutputDto();
 
-        if (car.getLicenseplate() !=null){
+        if (car.getLicenseplate() != null) {
             autoDto.setLicenseplate(car.getLicenseplate());
         }
-        if (car.getBrand() !=null){
+        if (car.getBrand() != null) {
             autoDto.setBrand(car.getBrand());
         }
-        if (car.getCarstatus() !=null){
+        if (car.getCarstatus() != null) {
             autoDto.setCarstatus(car.getCarstatus());
         }
         if (car.getCarparts() != null) {
             autoDto.setCarparts(car.getCarparts());
         }
-        if(car.getUser() != null) {
+        if (car.getUser() != null) {
             autoDto.setUser(car.getUser());
         }
         return autoDto;
     }
 
-    private Car transferDtotoCar(CarInputDto carInputDto){
+    private Car transferDtotoCar(CarInputDto carInputDto) {
         Car car = new Car();
 
         car.setLicenseplate(carInputDto.getLicenseplate());

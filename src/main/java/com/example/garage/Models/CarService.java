@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="carservices")
+@Table(name = "carservices")
 public class CarService {
     //variables.........................................
     @Id
@@ -26,7 +26,7 @@ public class CarService {
     @Value("${some.key:false}")
     private boolean custumor_response;
     @Value("${some.key:false}")
-    private  boolean mechanic_done;
+    private boolean mechanic_done;
     private double totalrepaircost;
     //relations.........................................
     @OneToMany(mappedBy = "carservice")
@@ -39,14 +39,16 @@ public class CarService {
     @OneToOne(mappedBy = "carService")
     private Invoice invoice;
 
-    public double calculateRepairCost(){
+    public double calculateRepairCost() {
         double total = 0.0;
         //total repair price is the combined repair items
-        if (repairs != null){
-            for (Repair repair: repairs){
-                total += repair.getRepairCost();}
-        }else{
-            total= 0.0;}
+        if (repairs != null) {
+            for (Repair repair : repairs) {
+                total += repair.getRepairCost();
+            }
+        } else {
+            total = 0.0;
+        }
         return total;
     }
 }

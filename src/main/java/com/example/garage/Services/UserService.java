@@ -32,7 +32,6 @@ public class UserService {
     }
 
 
-
     public List<UserDto> getUsers() {
         List<UserDto> collection = new ArrayList<>();
         List<User> list = (List<User>) userRepository.findAll();
@@ -45,9 +44,9 @@ public class UserService {
     public UserDto getUser(String username) {
         UserDto dto = new UserDto();
         Optional<User> user = userRepository.findById(username);
-        if (user.isPresent()){
+        if (user.isPresent()) {
             dto = fromUser(user.get());
-        }else {
+        } else {
             throw new UsernameNotFoundException(username);
         }
         return dto;
@@ -59,13 +58,13 @@ public class UserService {
 
     public String createUser(UserDto userDto) {
         String password = userDto.getPassword();
-        if(validatePassword(password)){
+        if (validatePassword(password)) {
             String randomString = RandomStringGenerator.generateAlphaNumeric(20);
             userDto.setApikey(randomString);
             userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
             User newUser = userRepository.save(toUser(userDto));
             return newUser.getUsername();
-        }else {
+        } else {
             throw new InvalidPasswordException("Your password must contain:\n At least 6 characters, 1 uppercase letter, 1 lowercase letter, 1 special character and may not contain any whitespaces");
         }
     }
@@ -77,14 +76,16 @@ public class UserService {
     public void updateUser(String username, UserDto userDto) {
         String password = userDto.getPassword();
         if (!userRepository.existsById(username)) throw new RecordNotFoundException();
-        if(validatePassword(password)){
+        if (validatePassword(password)) {
             User user = userRepository.findById(username).get();
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
             user.setEmail(userDto.getEmail());
+            user.setFirstname(userDto.getFirstname());
+            user.setLastname(userDto.getLastname());
             userRepository.save(user);
-        }else {
+        } else {
             throw new InvalidPasswordException("Your password must contain:\n At least 6 characters, 1 uppercase letter, 1 lowercase letter, 1 special character and may not contain any whitespaces");
-            }
+        }
     }
 
     public Set<Authority> getAuthorities(String username) {
@@ -110,20 +111,20 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public static UserDto fromUser(User user){
+    public static UserDto fromUser(User user) {
 
         var dto = new UserDto();
 
-        dto.username = user.getUsername();
-        dto.password = user.getPassword();
-        dto.enabled = user.isEnabled();
-        dto.apikey = user.getApikey();
-        dto.email = user.getEmail();
-        dto.authorities = user.getAuthorities();
+        dto.setUsername(user.getUsername());
+        dto.setPassword(user.getPassword());
+        dto.setEnabled(user.isEnabled());
+        dto.setApikey(user.getApikey());
+        dto.setEmail(user.getEmail());
+        dto.setAuthorities(user.getAuthorities());
+        dto.setFirstname(user.getFirstname());
+        dto.setLastname(user.getLastname());
         dto.setCars(user.getCars());
         dto.setInvoices(user.getInvoices());
-
-
         return dto;
     }
 
@@ -138,16 +139,15 @@ public class UserService {
         user.setEmail(userDto.getEmail());
         user.setInvoices(userDto.getInvoices());
         user.setCars(userDto.getCars());
+        user.setFirstname(userDto.getFirstname());
+        user.setLastname(userDto.getLastname());
 
 
         return user;
     }
-    public Boolean validatePassword(String password){
-        if(password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*?=])(?=\\S+$).{6,}$")){
-            return true;
-        } else {
-            return false;
-        }
+
+    public Boolean validatePassword(String password) {
+        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*?=])(?=\\S+$).{6,}$");
     }
 /*  ^                 - start-of-string
     (?=.*[0-9])       - a digit must occur at least once
@@ -157,7 +157,6 @@ public class UserService {
     (?=\S+$)          - no whitespace allowed in the entire string
     .{6,}             - anything, at least six places though
     $                 # end-of-string*/
-
 
 
 }

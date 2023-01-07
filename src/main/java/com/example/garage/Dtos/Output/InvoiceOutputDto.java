@@ -16,7 +16,7 @@ public class InvoiceOutputDto {
     private double totalCost;
     private boolean payed;
     private LocalDate repairDate;
-    @JsonIgnoreProperties(value = { "password","apikey", "authorities", "cars", "enabled","invoices"})
+    @JsonIgnoreProperties(value = {"password", "apikey", "authorities", "cars", "enabled", "invoices"})
     private User user;
 
     private CarService carService;

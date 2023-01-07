@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="carparts")
+@Table(name = "carparts")
 public class CarPart {
     //variables.........................................
     @Id
@@ -33,12 +33,10 @@ public class CarPart {
     @OneToMany(mappedBy = "carpart")
     List<Repair> repairs;
 
-
-
     public CarPart(CarpartName carpartname, String state, boolean checked) {
         this.carpartname = carpartname;
         this.state = state;
         this.checked = checked;
     }
-
 }
+

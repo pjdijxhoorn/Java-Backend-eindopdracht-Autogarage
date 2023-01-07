@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="carpapers")
+@Table(name = "carpapers")
 public class CarPaper {
 
     //variables.........................................
@@ -25,7 +25,7 @@ public class CarPaper {
     private String licenseplate;
 
     @Lob
-    public byte [] carPapers;
+    public byte[] carPapers;
 
     //relations.........................................
     @ManyToOne
@@ -34,6 +34,5 @@ public class CarPaper {
 
     @OneToOne(mappedBy = "carpaper")
     private Car car;
-
-
 }
+

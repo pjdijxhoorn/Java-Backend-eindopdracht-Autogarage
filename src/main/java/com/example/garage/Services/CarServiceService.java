@@ -5,7 +5,6 @@ import com.example.garage.Exceptions.BadRequestException;
 import com.example.garage.Exceptions.RecordNotFoundException;
 import com.example.garage.Models.Car;
 import com.example.garage.Models.CarService;
-import com.example.garage.Models.Repair;
 import com.example.garage.Models.User;
 import com.example.garage.Repositories.CarRepository;
 import com.example.garage.Repositories.CarServiceRepository;
@@ -35,7 +34,7 @@ public class CarServiceService {
     public Iterable<CarServiceOutputDto> getAllCarServices() {
         ArrayList<CarServiceOutputDto> carServiceOutputDtos = new ArrayList<>();
         Iterable<CarService> allcarservices = carServiceRepository.findAll();
-        for (CarService a: allcarservices){
+        for (CarService a : allcarservices) {
             CarServiceOutputDto carserviceDto = transferCarServicetoOuputDto(a);
             carServiceOutputDtos.add(carserviceDto);
         }
@@ -48,19 +47,19 @@ public class CarServiceService {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             currentUserName = authentication.getName();
             Optional<User> currentuser = userRepository.findById(currentUserName);
-            if (currentuser.isPresent()){
+            if (currentuser.isPresent()) {
                 User user = currentuser.get();
                 ArrayList<CarServiceOutputDto> carserviceOutputDtos = new ArrayList<>();
                 Iterable<Car> allcars = carRepository.findByUser(user);
-                for (Car a: allcars){
+                for (Car a : allcars) {
                     Iterable<CarService> carservices = a.getCarServices();
-                    for (CarService b:carservices){
+                    for (CarService b : carservices) {
                         CarServiceOutputDto carserviceDto = transferCarServicetoOuputDto(b);
                         carserviceOutputDtos.add(carserviceDto);
                     }
                 }
                 return carserviceOutputDtos;
-            }else {
+            } else {
                 throw new RecordNotFoundException("this users seems to have no values");
             }
         }
@@ -69,14 +68,13 @@ public class CarServiceService {
 
     public CarServiceOutputDto getOneCarServiceByID(long id) {
         Optional<CarService> optionalcarservice = carServiceRepository.findById(id);
-        if (optionalcarservice.isEmpty()){
-            throw new RecordNotFoundException("no carservice found with id: "+ id);
-        }else {
+        if (optionalcarservice.isEmpty()) {
+            throw new RecordNotFoundException("no carservice found with id: " + id);
+        } else {
             CarService carservice = optionalcarservice.get();
             return transferCarServicetoOuputDto(carservice);
         }
     }
-
 
 
     public CarServiceOutputDto createCarService(long car_id) {
@@ -98,11 +96,11 @@ public class CarServiceService {
         }
     }
 
-    public CarServiceOutputDto mechanicIsDone(long id, CarServiceOutputDto carServiceOutputDto){
+    public CarServiceOutputDto mechanicIsDone(long id, CarServiceOutputDto carServiceOutputDto) {
         Optional<CarService> optionalCarService = carServiceRepository.findById(id);
-        if (optionalCarService.isEmpty()){
-            throw new RecordNotFoundException("couldnt find the carservice with this id: " +id );
-        }else{
+        if (optionalCarService.isEmpty()) {
+            throw new RecordNotFoundException("couldnt find the carservice with this id: " + id);
+        } else {
             CarService carService = optionalCarService.get();
             carService.setMechanic_done(carServiceOutputDto.isMechanic_done());
             carServiceRepository.save(carService);
@@ -112,7 +110,7 @@ public class CarServiceService {
 
     }
 
-    public String approvalUser(long id, CarServiceOutputDto carServiceOutputDto){
+    public String approvalUser(long id, CarServiceOutputDto carServiceOutputDto) {
         // get the current user
         String currentUserName;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -121,17 +119,17 @@ public class CarServiceService {
             currentUserName = authentication.getName();
             Optional<User> currentuser = userRepository.findById(currentUserName);
             // check if current user is a logged in user and if the carservice exists
-            if (currentuser.isEmpty()){
+            if (currentuser.isEmpty()) {
                 throw new RecordNotFoundException("this users seems to have no values");
             } else if (optionalCarService.isEmpty()) {
-                throw new RecordNotFoundException("couldnt find the carservice with this id: " +id );
+                throw new RecordNotFoundException("couldnt find the carservice with this id: " + id);
             } else {
                 System.out.println("1");
                 User user = currentuser.get();
                 CarService carService = optionalCarService.get();
                 // check if the user owns the car from the carservice he is about to approve
                 boolean doescarbelong = false;
-                for (Car a : user.getCars()){
+                for (Car a : user.getCars()) {
                     if (a == carService.getCar()) {
                         doescarbelong = true;
                         System.out.println("2");
@@ -140,19 +138,17 @@ public class CarServiceService {
                     }
                 }
                 // if car is of the user set approve
-                if (doescarbelong){
+                if (doescarbelong) {
                     System.out.println("3");
                     carService.setRepair_approved(carServiceOutputDto.isRepair_approved());
                     carService.setCustumor_response(true);
                     carServiceRepository.save(carService);
-                    if (carService.isRepair_approved()){
+                    if (carService.isRepair_approved()) {
                         return "Repair approved";
-                    }
-                    else{
+                    } else {
                         return "Repair is not approved. Service will continu without repairs";
                     }
-                }
-                else {
+                } else {
                     throw new RecordNotFoundException("you don't own this car so you can not approve the repairs.");
                 }
             }
@@ -162,21 +158,19 @@ public class CarServiceService {
 
     public String deletecarservice(long id) {
         Optional<CarService> optionalcarservice = carServiceRepository.findById(id);
-        if (optionalcarservice.isEmpty()){
-            throw new RecordNotFoundException("No service found with the id of : "+ id);
-        }
-        else {
-            try{
+        if (optionalcarservice.isEmpty()) {
+            throw new RecordNotFoundException("No service found with the id of : " + id);
+        } else {
+            try {
                 CarService carService = optionalcarservice.get();
                 carServiceRepository.delete(carService);
                 return "Repair Removed successfully";
-            }catch(Exception e){
+            } catch (Exception e) {
                 throw new BadRequestException("it seems that this is still connected to a repair, a car or a invoice. First delete this/these for deleting this.");
             }
         }
 
     }
-
 
 
     private CarServiceOutputDto transferCarServicetoOuputDto(CarService carService) {

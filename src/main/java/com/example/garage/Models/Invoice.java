@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name="invoices")
+@Table(name = "invoices")
 public class Invoice {
     //variables.........................................
     @Id
@@ -44,25 +44,26 @@ public class Invoice {
     private Car car;
 
 
-    public double calculateRepairCost(){
+    public double calculateRepairCost() {
         double total = 0.0;
         // the repair price can only be calculated if the customer approved repairs
-        if (carService.isRepair_approved()){
+        if (carService.isRepair_approved()) {
             //total repair price is the combined repair items
-            for (Repair repair: carService.repairs){
-                if (repair.isRepair_done()){
-                total+=repair.getRepairCost();}
+            for (Repair repair : carService.repairs) {
+                if (repair.isRepair_done()) {
+                    total += repair.getRepairCost();
+                }
             }
         }
         return total;
-   }
+    }
 
-   public double calculateTotalCost(){
+    public double calculateTotalCost() {
         double total = 0.0;
         total += APKCHECK;
         total += totalrepaircost;
         total = total + ((total / 100) * btw);
-        total = Math.round(total*100.0)/100.0;
-       return  total;
-   }
+        total = Math.round(total * 100.0) / 100.0;
+        return total;
+    }
 }
