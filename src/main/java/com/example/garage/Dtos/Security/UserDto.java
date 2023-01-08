@@ -29,8 +29,6 @@ public class UserDto {
     public List<Car> cars;
     public List<Invoice> invoices;
 
-
-
     public Set<Authority> getAuthorities() {
         return authorities;
     }

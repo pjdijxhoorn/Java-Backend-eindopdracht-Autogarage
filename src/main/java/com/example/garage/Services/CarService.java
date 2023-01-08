@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.example.garage.Utilities.licenseplateValidator.validateLicensePlate;
@@ -172,23 +173,25 @@ public class CarService {
     }
 
 
-    public CarOutputDto updateCarStatusDesk(String licenseplate, CarOutputDto carOutputDto) {
+    public CarOutputDto updateCarStatusDesk(String licenseplate, String carstatus) {
         Car car = carRepository.findBylicenseplate(licenseplate);
-        Carstatus status = carOutputDto.getCarstatus();
+        carStatusValidation(carstatus);
+        Carstatus status = Carstatus.valueOf(carstatus);
         if (car == null) {
             throw new RecordNotFoundException("no car found with license-plate: " + licenseplate);
         } else if (status != Carstatus.CHECKED_IN && status != Carstatus.PICKED_UP) {
-            throw new RecordNotFoundException("You are not allowed to do this");
+            throw new RecordNotFoundException("You'r cuurent role doesn't allowed you to do this");
         } else {
-            car.setCarstatus(carOutputDto.getCarstatus());
+            car.setCarstatus(status);
             carRepository.save(car);
             return transferCarToDto(car);
         }
     }
 
-    public CarOutputDto updateCarStatusMechanic(String licenseplate, CarOutputDto carOutputDto) {
+    public CarOutputDto updateCarStatusMechanic(String licenseplate, String carstatus) {
         Car car = carRepository.findBylicenseplate(licenseplate);
-        Carstatus status = carOutputDto.getCarstatus();
+        carStatusValidation(carstatus);
+        Carstatus status = Carstatus.valueOf(carstatus);
         if (car == null) {
             throw new RecordNotFoundException("no car found with license-plate: " + licenseplate);
         } else if (status != Carstatus.INSPECTING && status != Carstatus.AWAITING_APPROVAL && status != Carstatus.REPAIR && status != Carstatus.WASHING && status != Carstatus.READY) {
@@ -200,7 +203,7 @@ public class CarService {
                     throw new BadRequestException("You can not proceed without Inspecting all the carparts!");
                 }
             }
-            car.setCarstatus(carOutputDto.getCarstatus());
+            car.setCarstatus(status);
             carRepository.save(car);
             String email = car.getUser().getEmail();
             if (car.getCarstatus() == Carstatus.AWAITING_APPROVAL) {
@@ -265,6 +268,21 @@ public class CarService {
         return car;
 
     }
+
+    public void carStatusValidation(String carstatus){
+        String errormessage = "Not the correct input. Input for status needs to be one of these:  CHECKED_IN, INSPECTING, AWAITING_APPROVAL, REPAIR, WASHING, READY, PICKED_UP";
+        if (
+                !Objects.equals(carstatus, "CHECKED_IN")&
+                        !Objects.equals(carstatus, "INSPECTING" )&
+                        !Objects.equals(carstatus, "AWAITING_APPROVAL" )&
+                        !Objects.equals(carstatus, "REPAIR" )&
+                        !Objects.equals(carstatus, "WASHING" )&
+                        !Objects.equals(carstatus, "READY" )&
+                        !Objects.equals(carstatus, "PICKED_UP" )){
+            throw new BadRequestException(errormessage);
+        }
+    }
+
 
 
 }

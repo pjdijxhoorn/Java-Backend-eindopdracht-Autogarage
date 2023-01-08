@@ -24,7 +24,7 @@ public class User {
     @Id
     @Column(nullable = false, unique = true)
     private String username;
-    @NotNull(message = "This isnt allowed to be Null ")
+    @NotNull(message = "This isn't allowed to be Null ")
     @Column
     private String password;
     @Column

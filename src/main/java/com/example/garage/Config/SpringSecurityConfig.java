@@ -65,8 +65,8 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.GET, "/cars/user/status").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/cars").hasRole("DESK")
                 .antMatchers(HttpMethod.PUT, "/cars/{id}").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/cars/statusdesk/{licenseplate}").hasRole("DESK")
-                .antMatchers(HttpMethod.PUT, "/cars/statusmechanic/{licenseplate}").hasRole("MECHANIC")
+                .antMatchers(HttpMethod.PUT, "/cars/statusdesk/{carstatus}/{licenseplate}").hasRole("DESK")
+                .antMatchers(HttpMethod.PUT, "/cars/statusmechanic/{carstatus}/{licenseplate}").hasRole("MECHANIC")
                 .antMatchers(HttpMethod.DELETE,"/cars/{id}").permitAll()
 
                 //----------------------------------------Endpoints Invoice--------------------------------------
@@ -114,6 +114,7 @@ public class SpringSecurityConfig {
 
                 //----------------------------------------Endpoints Repair--------------------------------------
                 .antMatchers(HttpMethod.GET, "/carpapers/upload/{user_id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/carpapers/getpdfcarpapers/{id}").permitAll()
 
                 //----------------------------------------Endpoints Auth--------------------------------------
                 .antMatchers(HttpMethod.GET,"/authenticated").authenticated()

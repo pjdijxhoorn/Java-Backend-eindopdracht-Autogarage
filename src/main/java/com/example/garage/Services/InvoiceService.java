@@ -20,7 +20,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -175,11 +174,13 @@ public class InvoiceService {
         return filename + " made and stored to the database";
     }
 
-    public String sendInvoicePdf(long id) throws MessagingException, IOException {
+    public String sendInvoicePdf(long id) throws IOException {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("no invoice found with id " + id));
         byte[] pdf;
         if (invoice.getPdfinvoice() != null) {
             pdf = invoice.getPdfinvoice();
+            // I didn't seem to be able to send a file retrieved from the database without saving it to a file locally first.
+            // I am not sure if this solution is good code, so I would love feedback on this.
             Path path = Paths.get("src/main/resources/Invoices/invoice" + invoice.getUser().getUsername() + ".pdf");
             Files.write(path, pdf);
             String location = String.valueOf(path);
@@ -187,6 +188,7 @@ public class InvoiceService {
             Email InvoiceEmail = new Email(emailadress, "Hereby we wish to present you with the bill!", "Invoice", location);
             this.emailService.sendMailWithAttachment(InvoiceEmail);
             Path removepath = Paths.get(location);
+            // Here I delete the file from local storage again.
             Files.delete(removepath);
             return "email send to user";
         } else {

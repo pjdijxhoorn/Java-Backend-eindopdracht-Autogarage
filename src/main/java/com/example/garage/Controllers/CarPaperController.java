@@ -1,6 +1,5 @@
 package com.example.garage.Controllers;
 
-import com.example.garage.Repositories.CarPaperRepository;
 import com.example.garage.Services.CarpaperService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +15,13 @@ import java.io.IOException;
 public class CarPaperController {
 
     private final CarpaperService carpaperService;
-    private final CarPaperRepository carPaperRepository;
 
-    public CarPaperController(CarpaperService carpaperService, CarPaperRepository carPaperRepository) {
+
+    public CarPaperController(CarpaperService carpaperService) {
         this.carpaperService = carpaperService;
-        this.carPaperRepository = carPaperRepository;
     }
 
-    @GetMapping(value = "/{id}/getpdfcarpapers", produces = MediaType.APPLICATION_PDF_VALUE)
+    @GetMapping(value = "/getpdfcarpapers/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> getCarpapersById(@PathVariable long id) {
         return carpaperService.getCarPapersById(id);
     }

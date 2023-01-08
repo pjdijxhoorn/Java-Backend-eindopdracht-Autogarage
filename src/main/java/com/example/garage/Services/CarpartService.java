@@ -44,7 +44,7 @@ public class CarpartService {
             throw new RecordNotFoundException("no car found with license-plate: " + licenseplate);
         }
         Optional<CarPart> optionalCarPart = Optional.empty();
-        CarPart carpart2 = null;
+        CarPart carpart2;
         for (CarPart carpartx : car.getCarparts()) {
             String carpartname = String.valueOf(carpartx.getCarpartname());
             if (Objects.equals(carpartname, carpart)) {
@@ -66,7 +66,6 @@ public class CarpartService {
 
     private CarPartOutputDto transferCarpartToDto(CarPart carpart) {
         CarPartOutputDto carPartOutputDto = new CarPartOutputDto();
-
 
         carPartOutputDto.setState(carpart.getState());
         carPartOutputDto.setCarpartname(carpart.getCarpartname());

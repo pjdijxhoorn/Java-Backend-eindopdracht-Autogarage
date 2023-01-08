@@ -35,5 +35,4 @@ public class ExceptionController {
     public ResponseEntity<Object> exception(BadRequestException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
-
 }

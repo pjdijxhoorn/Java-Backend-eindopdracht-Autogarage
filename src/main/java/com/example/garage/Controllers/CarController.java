@@ -66,14 +66,14 @@ public class CarController {
         }
     }
 
-    @PutMapping("statusdesk/{licenseplate}")
-    public ResponseEntity<CarOutputDto> updateCarStatusDesk(@PathVariable String licenseplate, @RequestBody CarOutputDto carOutputDto) {
-        return ResponseEntity.ok(carService.updateCarStatusDesk(licenseplate, carOutputDto));
+    @PutMapping("/statusdesk/{carstatus}/{licenseplate}")
+    public ResponseEntity<CarOutputDto> updateCarStatusDesk(@PathVariable String licenseplate, @PathVariable String carstatus) {
+        return ResponseEntity.ok(carService.updateCarStatusDesk(licenseplate, carstatus));
     }
 
-    @PutMapping("statusmechanic/{licenseplate}")
-    public ResponseEntity<CarOutputDto> updateCarStatusMechanic(@PathVariable String licenseplate, @RequestBody CarOutputDto carOutputDto) {
-        return ResponseEntity.ok(carService.updateCarStatusMechanic(licenseplate, carOutputDto));
+    @PutMapping("statusmechanic/{carstatus}/{licenseplate}")
+    public ResponseEntity<CarOutputDto> updateCarStatusMechanic(@PathVariable String licenseplate, @PathVariable String carstatus) {
+        return ResponseEntity.ok(carService.updateCarStatusMechanic(licenseplate, carstatus));
     }
 
     @PutMapping("{id}")
