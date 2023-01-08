@@ -16,15 +16,15 @@ public class CarpartController {
         this.carpartService = carpartService;
     }
 
-    @GetMapping("{car_id}")
-    public ResponseEntity<Iterable<CarPartOutputDto>> getAllPartsFromCarid(@PathVariable long car_id) {
-        return ResponseEntity.ok(carpartService.getAllPartsFromCarid(car_id));
+    @GetMapping("{licenseplate}")
+    public ResponseEntity<Iterable<CarPartOutputDto>> getAllPartsFromCarid(@PathVariable String licenseplate) {
+        return ResponseEntity.ok(carpartService.getAllPartsFromCarid(licenseplate));
     }
 
 
-    @PutMapping("{car_id}/inspection/{carpart}")
-    public ResponseEntity<CarPartOutputDto> Carpartinspection(@PathVariable long car_id, @PathVariable String carpart, @RequestBody CarPartInputDto carPartinputDto) {
-        return ResponseEntity.ok(carpartService.Carpartinspection(car_id, carpart, carPartinputDto));
+    @PutMapping("{licenseplate}/inspection/{carpart}")
+    public ResponseEntity<CarPartOutputDto> Carpartinspection(@PathVariable String licenseplate, @PathVariable String carpart, @RequestBody CarPartInputDto carPartinputDto) {
+        return ResponseEntity.ok(carpartService.Carpartinspection(licenseplate, carpart, carPartinputDto));
     }
 
 
