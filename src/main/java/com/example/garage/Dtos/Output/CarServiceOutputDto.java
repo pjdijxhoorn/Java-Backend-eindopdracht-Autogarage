@@ -3,7 +3,7 @@ package com.example.garage.Dtos.Output;
 import com.example.garage.Models.Car;
 import com.example.garage.Models.Invoice;
 import com.example.garage.Models.Repair;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,8 +20,9 @@ public class CarServiceOutputDto {
     //relations.........................................
 
     List<Repair> repairs;
-    @JsonIgnoreProperties(value = {"carparts", "invoices", "carServices", "invoices"})
+    @JsonIgnore
     private Car car;
+    @JsonIgnore
     private Invoice invoice;
 
     public double calculateRepairCost() {

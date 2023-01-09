@@ -1,9 +1,7 @@
 package com.example.garage.Dtos.Output;
 
-import com.example.garage.Models.CarPaper;
-import com.example.garage.Models.CarPart;
-import com.example.garage.Models.Carstatus;
-import com.example.garage.Models.User;
+import com.example.garage.Models.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +20,10 @@ public class CarOutputDto {
     private Carstatus carstatus;
     List<CarPart> carparts;
 
-    @JsonIgnoreProperties(value = {"password", "apikey", "authorities", "cars"})
+    @JsonIgnore
     private User user;
+    @JsonIgnore
     private CarPaper carpaper;
+    @JsonIgnoreProperties(value = {"pdfinvoice"})
+    private Invoice invoice;
 }

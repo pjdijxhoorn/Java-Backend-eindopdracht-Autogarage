@@ -33,6 +33,9 @@ public class CarpaperService {
         CarPaper carPaper = carPaperRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("No car papers found with id: " + id));
         byte[] carPapers = carPaper.getCarPapers();
+        if (carPapers == null){
+            throw new RecordNotFoundException("there is no carpaper pdf yet.");
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("attachment", "carpapers" + id + ".pdf");

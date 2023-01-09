@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ public class Invoice {
     private LocalDate repairDate;
 
     @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
     public byte[] pdfinvoice;
 
     public static final double btw = 21.0;

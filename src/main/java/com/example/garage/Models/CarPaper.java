@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -22,6 +23,7 @@ public class CarPaper {
     private String licenseplate;
 
     @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
     public byte[] carPapers;
 
     //relations.........................................

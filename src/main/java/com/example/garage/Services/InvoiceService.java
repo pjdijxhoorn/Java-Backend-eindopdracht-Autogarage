@@ -92,6 +92,9 @@ public class InvoiceService {
         Invoice invoice = invoiceRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("No car invoice found with id: " + id));
         byte[] invoicepdf = invoice.getPdfinvoice();
+        if (invoicepdf == null){
+            throw new RecordNotFoundException("no pdf in this invoice(yet)");
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("attachment", "invoice" + id + ".pdf");

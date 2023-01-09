@@ -4,7 +4,6 @@ import com.example.garage.Models.Car;
 import com.example.garage.Models.CarpartName;
 import com.example.garage.Models.Repair;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +19,7 @@ public class CarPartOutputDto {
     public boolean checked;
 
     //relations.........................................
-    @JsonIgnoreProperties(value = {"carparts", "invoices", "carpaper", "carServices"})
+    @JsonIgnore
     private Car car;
     @JsonIgnore
     List<Repair> repairs;

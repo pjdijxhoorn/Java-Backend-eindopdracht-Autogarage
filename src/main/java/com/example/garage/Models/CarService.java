@@ -37,6 +37,7 @@ public class CarService {
     private Car car;
 
     @OneToOne(mappedBy = "carService")
+    @JsonIgnore
     private Invoice invoice;
 
     public double calculateRepairCost() {
