@@ -16,13 +16,12 @@ public class CarPaperController {
 
     private final CarpaperService carpaperService;
 
-
     public CarPaperController(CarpaperService carpaperService) {
         this.carpaperService = carpaperService;
     }
 
     @GetMapping(value = "/getpdfcarpapers/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<byte[]> getCarpapersById(@PathVariable long id) {
+    public ResponseEntity<byte[]> getCarpapersById(@PathVariable String id) {
         return carpaperService.getCarPapersById(id);
     }
 

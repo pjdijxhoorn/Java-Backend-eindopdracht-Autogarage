@@ -53,5 +53,5 @@ INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice
 INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice_id) VALUES (103, 'brakelight broken', 100.0, false, 103, 100);
 INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice_id) VALUES (104, 'Suspension was like a babycart when you drop it of a cliff', 100.0, false, 104, 100);
 
-INSERT INTO carpapers (id, car_papers) VALUES (1, '52495');
+INSERT INTO carpapers (licenseplate, car_papers, user_username) VALUES ('33-TTB-3', '52495', 'paul');
 

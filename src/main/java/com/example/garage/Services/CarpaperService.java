@@ -29,7 +29,7 @@ public class CarpaperService {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<byte[]> getCarPapersById(long id) {
+    public ResponseEntity<byte[]> getCarPapersById(String id) {
         CarPaper carPaper = carPaperRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("No car papers found with id: " + id));
         byte[] carPapers = carPaper.getCarPapers();

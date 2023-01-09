@@ -1,5 +1,6 @@
 package com.example.garage.Dtos.Output;
 
+import com.example.garage.Models.CarPaper;
 import com.example.garage.Models.CarPart;
 import com.example.garage.Models.Carstatus;
 import com.example.garage.Models.User;
@@ -23,4 +24,5 @@ public class CarOutputDto {
 
     @JsonIgnoreProperties(value = {"password", "apikey", "authorities", "cars"})
     private User user;
+    private CarPaper carpaper;
 }

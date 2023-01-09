@@ -113,8 +113,8 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.PUT, "/carparts/{licenseplate}/inspection/{carpart}").permitAll()
 
                 //----------------------------------------Endpoints Repair--------------------------------------
-                .antMatchers(HttpMethod.GET, "/carpapers/upload/{user_id}").permitAll()
-                .antMatchers(HttpMethod.GET, "/carpapers/getpdfcarpapers/{id}").permitAll()
+                .antMatchers(HttpMethod.POST, "/carpapers/upload/{user_id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/carpapers/getpdfcarpapers/{licenseplate}").permitAll()
 
                 //----------------------------------------Endpoints Auth--------------------------------------
                 .antMatchers(HttpMethod.GET,"/authenticated").authenticated()

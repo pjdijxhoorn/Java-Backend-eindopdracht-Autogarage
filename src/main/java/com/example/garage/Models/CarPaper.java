@@ -19,9 +19,6 @@ public class CarPaper {
 
     //variables.........................................
     @Id
-    @GeneratedValue(generator = "ID_GENERATOR")
-    private Long id;
-
     private String licenseplate;
 
     @Lob
