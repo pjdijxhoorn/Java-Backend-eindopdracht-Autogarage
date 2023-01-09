@@ -1,7 +1,7 @@
 package com.example.garage.Dtos.Output;
 
 import com.example.garage.Models.Car;
-import com.example.garage.Models.CarService;
+import com.example.garage.Models.Maintenance;
 import com.example.garage.Models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class InvoiceOutputDto {
     @JsonIgnore
     private User user;
     @JsonIgnore
-    private CarService carService;
+    private Maintenance maintenance;
     @JsonIgnore
     private Car car;
 }

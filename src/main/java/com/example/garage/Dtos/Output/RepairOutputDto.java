@@ -1,7 +1,7 @@
 package com.example.garage.Dtos.Output;
 
 import com.example.garage.Models.CarPart;
-import com.example.garage.Models.CarService;
+import com.example.garage.Models.Maintenance;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +15,6 @@ public class RepairOutputDto {
     @JsonIgnore
     private CarPart carpart;
     @JsonIgnore
-    private CarService carService;
+    private Maintenance maintenance;
     private boolean repair_done;
 }

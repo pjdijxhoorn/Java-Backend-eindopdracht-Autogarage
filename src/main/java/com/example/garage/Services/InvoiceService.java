@@ -4,9 +4,9 @@ import com.example.garage.Dtos.Input.InvoiceInputDto;
 import com.example.garage.Dtos.Output.InvoiceOutputDto;
 import com.example.garage.Exceptions.BadRequestException;
 import com.example.garage.Exceptions.RecordNotFoundException;
-import com.example.garage.Models.CarService;
+import com.example.garage.Models.Maintenance;
 import com.example.garage.Models.*;
-import com.example.garage.Repositories.CarServiceRepository;
+import com.example.garage.Repositories.MaintenanceRepository;
 import com.example.garage.Repositories.InvoiceRepository;
 import com.example.garage.Repositories.UserRepository;
 import com.lowagie.text.*;
@@ -36,13 +36,13 @@ import static com.lowagie.text.Element.ALIGN_RIGHT;
 public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
     private final UserRepository userRepository;
-    private final CarServiceRepository carServiceRepository;
+    private final MaintenanceRepository maintenanceRepository;
     private final EmailService emailService;
 
-    public InvoiceService(InvoiceRepository invoiceRepository, UserRepository userRepository, CarServiceRepository carServiceRepository, EmailService emailService) {
+    public InvoiceService(InvoiceRepository invoiceRepository, UserRepository userRepository, MaintenanceRepository maintenanceRepository, EmailService emailService) {
         this.invoiceRepository = invoiceRepository;
         this.userRepository = userRepository;
-        this.carServiceRepository = carServiceRepository;
+        this.maintenanceRepository = maintenanceRepository;
         this.emailService = emailService;
     }
 
@@ -201,19 +201,19 @@ public class InvoiceService {
 
 
     public long createInvoice(long service_id) {
-        Optional<CarService> optionalcarservice = carServiceRepository.findById(service_id);
+        Optional<Maintenance> optionalcarservice = maintenanceRepository.findById(service_id);
         if (optionalcarservice.isEmpty()) {
             throw new RecordNotFoundException("no car service found with this id " + service_id);
         } else if (!optionalcarservice.get().isMechanic_done()) {
             throw new BadRequestException("The mechanic isn't yet finished with his job so you cant make the invoice just yet. ");
         } else {
-            CarService carService = optionalcarservice.get();
+            Maintenance maintenance = optionalcarservice.get();
             Invoice newInvoice = new Invoice();
-            newInvoice.setCarService(carService);
+            newInvoice.setMaintenance(maintenance);
             newInvoice.setPayed(false);
-            newInvoice.setUser(carService.getCar().getUser());
+            newInvoice.setUser(maintenance.getCar().getUser());
             newInvoice.setRepairDate(java.time.LocalDate.now());
-            newInvoice.setCar(carService.getCar());
+            newInvoice.setCar(maintenance.getCar());
             newInvoice.setTotalrepaircost(newInvoice.calculateRepairCost());
             newInvoice.setTotalcost(newInvoice.calculateTotalCost());
 
@@ -280,7 +280,7 @@ public class InvoiceService {
 
     public String repairItemStringBuilder(Invoice invoice) {
         StringBuilder repairitems = new StringBuilder();
-        for (Repair repair : invoice.getCarService().getRepairs()) {
+        for (Repair repair : invoice.getMaintenance().getRepairs()) {
             repairitems.append("Carpart: ").append(repair.getCarpart().carpartname).append("\t\t\t").append("Repair-cost: ").append(repair.getRepairCost()).append("\t\t\t").append("Repair-done: ").append(repair.isRepair_done()).append(" \n").append("Notes: ").append(repair.getNotes()).append("\n \n");
         }
         repairitems.append("APK CHECK \t\t\t" + Invoice.APKCHECK + "\t\t\tvoldaan");

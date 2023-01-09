@@ -1,42 +1,27 @@
-package com.example.garage.Models;
+package com.example.garage.Dtos.Output;
 
+import com.example.garage.Models.Car;
+import com.example.garage.Models.Invoice;
+import com.example.garage.Models.Repair;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 
-import javax.persistence.*;
 import java.util.List;
 
-@Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "carservices")
-public class CarService {
+@Getter
+public class MaintenanceOutputDto {
     //variables.........................................
-    @Id
-    @GeneratedValue(generator = "ID_GENERATOR")
-    private Long id;
-    @Value("${some.key:false}")
     private boolean repair_approved;
-    @Value("${some.key:false}")
     private boolean custumor_response;
-    @Value("${some.key:false}")
     private boolean mechanic_done;
     private double totalrepaircost;
     //relations.........................................
-    @OneToMany(mappedBy = "carservice")
-    List<Repair> repairs;
 
-    @ManyToOne
+    List<Repair> repairs;
     @JsonIgnore
     private Car car;
-
-    @OneToOne(mappedBy = "carService")
     @JsonIgnore
     private Invoice invoice;
 

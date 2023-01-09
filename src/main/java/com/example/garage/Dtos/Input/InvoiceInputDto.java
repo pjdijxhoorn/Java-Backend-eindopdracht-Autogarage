@@ -1,7 +1,7 @@
 package com.example.garage.Dtos.Input;
 
 import com.example.garage.Models.Car;
-import com.example.garage.Models.CarService;
+import com.example.garage.Models.Maintenance;
 import com.example.garage.Models.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +19,6 @@ public class InvoiceInputDto {
     private String userid;
     private User user;
 
-    private CarService carService;
+    private Maintenance maintenance;
     private Car car;
 }

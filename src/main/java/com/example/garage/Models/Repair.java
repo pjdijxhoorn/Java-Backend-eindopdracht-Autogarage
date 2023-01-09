@@ -34,5 +34,5 @@ public class Repair {
 
     @ManyToOne
     @JsonIgnore
-    private CarService carservice;
+    private Maintenance maintenance;
 }

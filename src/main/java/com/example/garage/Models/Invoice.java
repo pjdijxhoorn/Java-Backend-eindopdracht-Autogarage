@@ -39,7 +39,7 @@ public class Invoice {
     private User user;
 
     @OneToOne
-    private CarService carService;
+    private Maintenance maintenance;
 
     @ManyToOne
     @JsonIgnore
@@ -49,9 +49,9 @@ public class Invoice {
     public double calculateRepairCost() {
         double total = 0.0;
         // the repair price can only be calculated if the customer approved repairs
-        if (carService.isRepair_approved()) {
+        if (maintenance.isRepair_approved()) {
             //total repair price is the combined repair items
-            for (Repair repair : carService.repairs) {
+            for (Repair repair : maintenance.repairs) {
                 if (repair.isRepair_done()) {
                     total += repair.getRepairCost();
                 }

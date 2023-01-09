@@ -230,9 +230,13 @@ public class CarService {
         if (optionalcar.isEmpty()) {
             throw new RecordNotFoundException("No car found with the id of : " + id);
         } else {
+            try {
             Car car = optionalcar.get();
             carRepository.delete(car);
             return "Car Removed successfully";
+            } catch (Exception e) {
+                throw new BadRequestException("it seems that this is still connected to the car, a carpart, a maintenance or a invoice. First delete this/these for deleting this.");
+            }
         }
     }
 

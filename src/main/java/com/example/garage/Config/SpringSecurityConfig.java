@@ -81,13 +81,13 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.DELETE, "/invoices/{id}").hasRole("ADMIN")
 
                 //----------------------------------------Endpoints Service--------------------------------------
-                .antMatchers(HttpMethod.GET, "/services").hasAnyRole("DESK","MECHANIC","ADMIN")
-                .antMatchers(HttpMethod.GET, "/services/{id}").hasAnyRole("DESK","MECHANIC","ADMIN")
-                .antMatchers(HttpMethod.GET, "/services/user").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/services/{car_id}").hasAnyRole("DESK","ADMIN")
-                .antMatchers(HttpMethod.PUT, "/services/{id}/mechanicdone").hasAnyRole("MECHANIC","ADMIN")
-                .antMatchers(HttpMethod.PUT, "/services/{id}/approvaluser").hasRole("USER")
-                .antMatchers(HttpMethod.DELETE, "/services/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/maintenances").hasAnyRole("DESK","MECHANIC","ADMIN")
+                .antMatchers(HttpMethod.GET, "/maintenances/{id}").hasAnyRole("DESK","MECHANIC","ADMIN")
+                .antMatchers(HttpMethod.GET, "/maintenances/user").hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/maintenances/{car_id}").hasAnyRole("DESK","ADMIN")
+                .antMatchers(HttpMethod.PUT, "/maintenances/{id}/mechanicdone").hasAnyRole("MECHANIC","ADMIN")
+                .antMatchers(HttpMethod.PUT, "/maintenances/{id}/approvaluser").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/maintenances/{id}").hasRole("ADMIN")
 
                 //----------------------------------------Endpoints Repair--------------------------------------
                 .antMatchers(HttpMethod.GET, "/repairs/{licenseplate}").hasAnyRole("MECHANIC","DESK","ADMIN")

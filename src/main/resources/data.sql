@@ -136,22 +136,22 @@ UPDATE cars SET User_username = 'User8!' WHERE id = 107;
 UPDATE cars SET User_username = 'User9!' WHERE id = 108;
 UPDATE cars SET User_username = 'Superadmin1!' WHERE id = 109;
 
-INSERT INTO carservices(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (100, true, true, true, 0.0, 100);
-INSERT INTO carservices(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (101, false, false, false, 0.0, 101);
-INSERT INTO carservices(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (102, true, true, true, 0.0, 102);
-INSERT INTO carservices(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (103, true, true, true, 0.0, 103);
-INSERT INTO carservices(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (104, true, true, true, 0.0, 104);
-INSERT INTO carservices(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (105, true, true, true, 0.0, 105);
-INSERT INTO carservices(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (106, true, true, true, 0.0, 106);
-INSERT INTO carservices(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (107, true, true, true, 0.0, 107);
-INSERT INTO carservices(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (108, true, true, true, 0.0, 108);
-INSERT INTO carservices(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (109, true, true, true, 0.0, 109);
+INSERT INTO maintenance(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (100, true, true, true, 0.0, 100);
+INSERT INTO maintenance(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (101, false, false, false, 0.0, 101);
+INSERT INTO maintenance(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (102, true, true, true, 0.0, 102);
+INSERT INTO maintenance(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (103, true, true, true, 0.0, 103);
+INSERT INTO maintenance(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (104, true, true, true, 0.0, 104);
+INSERT INTO maintenance(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (105, true, true, true, 0.0, 105);
+INSERT INTO maintenance(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (106, true, true, true, 0.0, 106);
+INSERT INTO maintenance(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (107, true, true, true, 0.0, 107);
+INSERT INTO maintenance(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (108, true, true, true, 0.0, 108);
+INSERT INTO maintenance(id, repair_approved, custumor_response, mechanic_done, totalrepaircost, car_id) VALUES (109, true, true, true, 0.0, 109);
 
-INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice_id) VALUES (100, 'worn out tires not enough profile left', 100.0, true, 100, 100);
-INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice_id) VALUES (101, 'worn out brakes', 100.0, true, 101, 100);
-INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice_id) VALUES (102, 'steering lining was way off', 100.0, true, 102, 100);
-INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice_id) VALUES (103, 'brakelight broken', 100.0, false, 103, 100);
-INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, carservice_id) VALUES (104, 'Suspension was like a babycart when you drop it of a cliff', 100.0, false, 104, 100);
+INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, maintenance_id) VALUES (100, 'worn out tires not enough profile left', 100.0, true, 100, 100);
+INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, maintenance_id) VALUES (101, 'worn out brakes', 100.0, true, 101, 100);
+INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, maintenance_id) VALUES (102, 'steering lining was way off', 100.0, true, 102, 100);
+INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, maintenance_id) VALUES (103, 'brakelight broken', 100.0, false, 103, 100);
+INSERT INTO repairs (id, notes, repair_cost, repair_done, carpart_id, maintenance_id) VALUES (104, 'Suspension was like a babycart when you drop it of a cliff', 100.0, false, 104, 100);
 
 INSERT INTO carpapers (licenseplate, user_username) VALUES ('33-TTB-3', 'User1!');
 INSERT INTO carpapers (licenseplate, user_username) VALUES ('12-LOL-3', 'User2!');
