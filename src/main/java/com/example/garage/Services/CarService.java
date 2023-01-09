@@ -210,7 +210,8 @@ public class CarService {
                 Email approvalmail = new Email(//
                         email,//
                         "repair approval",//
-                        "Your car is awaiting approval for the repairs.");
+                        "Your car is awaiting approval for the repairs. " +
+                                "If you dont want all or none of the repairs please give us a call!");
                 this.emailService.sendSimpleMail(approvalmail);
             }
             if (car.getCarstatus() == Carstatus.READY) {
