@@ -13,10 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -104,11 +101,18 @@ public class UserService {
     }
 
     public void removeAuthority(String username, String authority) {
+        if(!Objects.equals(authority, "ROLE_USER")&!Objects.equals(authority, "ROLE_DESK")&!Objects.equals(authority, "ROLE_ADMIN")&!Objects.equals(authority, "ROLE_MECHANIC")){
+            throw new RecordNotFoundException(" please fill in one of these roles: ROLE_USER, ROLE_DESK, ROLE_ADMIN, ROLE_MECHANIC");}
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
+        try{
         User user = userRepository.findById(username).get();
-        Authority authorityToRemove = user.getAuthorities().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();
+        Authority authorityToRemove = user.getAuthorities().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();System.out.println(authorityToRemove);
         user.removeAuthority(authorityToRemove);
         userRepository.save(user);
+        }catch (Exception e){
+            throw new RecordNotFoundException("that role is already removed, or was never there!");
+        }
+
     }
 
     public static UserDto fromUser(User user) {

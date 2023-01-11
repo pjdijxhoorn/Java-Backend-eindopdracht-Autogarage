@@ -5,6 +5,7 @@ import com.example.garage.Dtos.Output.CarOutputDto;
 import com.example.garage.Exceptions.BadRequestException;
 import com.example.garage.Exceptions.RecordNotFoundException;
 import com.example.garage.Models.*;
+import com.example.garage.Repositories.CarPaperRepository;
 import com.example.garage.Repositories.CarRepository;
 import com.example.garage.Repositories.CarpartRepository;
 import com.example.garage.Repositories.UserRepository;
@@ -27,12 +28,14 @@ public class CarService {
     private final CarpartRepository carpartRepository;
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final CarPaperRepository carPaperRepository;
 
-    public CarService(CarRepository carRepository, CarpartRepository carpartRepository, UserRepository userRepository, EmailService emailService) {
+    public CarService(CarRepository carRepository, CarpartRepository carpartRepository, UserRepository userRepository, EmailService emailService, CarPaperRepository carPaperRepository) {
         this.carRepository = carRepository;
         this.carpartRepository = carpartRepository;
         this.userRepository = userRepository;
         this.emailService = emailService;
+        this.carPaperRepository = carPaperRepository;
     }
 
     public Iterable<CarOutputDto> getAllCars() {
@@ -148,6 +151,11 @@ public class CarService {
             CarPart newschock_absorption = carpartRepository.save(schock_absorption);
             newschock_absorption.setCar(savedcar);
 
+            Optional<CarPaper> optionalcarpaper = carPaperRepository.findById(licenseplate);
+            if (optionalcarpaper.isPresent()){
+                CarPaper carpaper = optionalcarpaper.get();
+                savedcar.setCarpaper(carpaper);
+            }
             savedcar = carRepository.save(savedcar);
             return savedcar.getId();
         } else if (car.getLicenseplate().equals(licenseplate)) {

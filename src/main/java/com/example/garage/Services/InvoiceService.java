@@ -281,7 +281,7 @@ public class InvoiceService {
     public String repairItemStringBuilder(Invoice invoice) {
         StringBuilder repairitems = new StringBuilder();
         for (Repair repair : invoice.getMaintenance().getRepairs()) {
-            repairitems.append("Carpart: ").append(repair.getCarpart().carpartname).append("\t\t\t").append("Repair-cost: ").append(repair.getRepairCost()).append("\t\t\t").append("Repair-done: ").append(repair.isRepair_done()).append(" \n").append("Notes: ").append(repair.getNotes()).append("\n \n");
+            repairitems.append("Carpart: ").append(repair.getCarpart().getCarpartname()).append("\t\t\t").append("Repair-cost: ").append(repair.getRepairCost()).append("\t\t\t").append("Repair-done: ").append(repair.isRepair_done()).append(" \n").append("Notes: ").append(repair.getNotes()).append("\n \n");
         }
         repairitems.append("APK CHECK \t\t\t" + Invoice.APKCHECK + "\t\t\tvoldaan");
         return repairitems.toString();

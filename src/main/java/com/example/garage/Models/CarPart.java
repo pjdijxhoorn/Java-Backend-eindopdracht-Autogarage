@@ -19,11 +19,11 @@ public class CarPart {
     //variables.........................................
     @Id
     @GeneratedValue(generator = "ID_GENERATOR")
-    public Long id;
+    private Long id;
     @Enumerated(EnumType.STRING)
-    public CarpartName carpartname;
-    public String state;
-    public boolean checked;
+    private CarpartName carpartname;
+    private String state;
+    private boolean checked;
 
     //relations.........................................
     @ManyToOne
@@ -31,7 +31,7 @@ public class CarPart {
     private Car car;
 
     @OneToMany(mappedBy = "carpart")
-    List<Repair> repairs;
+    private List<Repair> repairs;
 
     public CarPart(CarpartName carpartname, String state, boolean checked) {
         this.carpartname = carpartname;

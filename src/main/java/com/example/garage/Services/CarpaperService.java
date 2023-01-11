@@ -3,9 +3,11 @@ package com.example.garage.Services;
 
 import com.example.garage.Exceptions.BadRequestException;
 import com.example.garage.Exceptions.RecordNotFoundException;
+import com.example.garage.Models.Car;
 import com.example.garage.Models.CarPaper;
 import com.example.garage.Models.User;
 import com.example.garage.Repositories.CarPaperRepository;
+import com.example.garage.Repositories.CarRepository;
 import com.example.garage.Repositories.UserRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static com.example.garage.Utilities.licenseplateValidator.validateLicensePlate;
 
@@ -23,10 +26,12 @@ public class CarpaperService {
 
     private final CarPaperRepository carPaperRepository;
     private final UserRepository userRepository;
+    private final CarRepository carRepository;
 
-    public CarpaperService(CarPaperRepository carPaperRepository, UserRepository userRepository) {
+    public CarpaperService(CarPaperRepository carPaperRepository, UserRepository userRepository, CarRepository carRepository) {
         this.carPaperRepository = carPaperRepository;
         this.userRepository = userRepository;
+        this.carRepository = carRepository;
     }
 
     public ResponseEntity<byte[]> getCarPapersById(String id) {
@@ -53,6 +58,12 @@ public class CarpaperService {
             throw new BadRequestException("this licenseplate is already registerd.");
         } else {
             CarPaper carPaper = new CarPaper();
+
+            Optional<Car> optionalcar = Optional.ofNullable(carRepository.findBylicenseplate(licenseplate));
+            if (optionalcar.isPresent()){
+                Car car = optionalcar.get();
+                carPaper.setCar(car);
+            }
             carPaper.setLicenseplate(licenseplate);
             carPaper.setUser(user);
             carPaper.carPapers = file.getBytes();
