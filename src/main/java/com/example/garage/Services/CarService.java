@@ -203,7 +203,7 @@ public class CarService {
         if (car == null) {
             throw new RecordNotFoundException("no car found with license-plate: " + licenseplate);
         } else if (status != Carstatus.INSPECTING && status != Carstatus.AWAITING_APPROVAL && status != Carstatus.REPAIR && status != Carstatus.WASHING && status != Carstatus.READY) {
-            throw new RecordNotFoundException("You are not allowed to do this");
+            throw new BadRequestException("You are not allowed to do this");
         } else {
             List<CarPart> carpartsinspected = car.getCarparts();
             for (CarPart carpart : carpartsinspected) {

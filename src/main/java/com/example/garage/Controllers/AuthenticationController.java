@@ -58,4 +58,71 @@ public class AuthenticationController {
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
+    @GetMapping( "/info")
+    public ResponseEntity<String> info() {
+        String info = """
+                Here follow all the possible commands for this application
+                ----------Cars!----------
+                localhost:8080/cars
+                localhost:8080/cars/{id}
+                localhost:8080/cars/licenseplate/{licenseplate}
+                localhost:8080/cars/user
+                localhost:8080/cars/user/status
+                localhost:8080/cars   * POST
+                localhost:8080/cars/{id} * PUT
+                localhost:8080/cars/statusdesk/{carstatus}/{licenseplate}
+                localhost:8080/cars/statusmechanic/{carstatus}/{licenseplate}
+                localhost:8080/cars/{id} *DELETE
+
+                ----------Invoices!----------
+                localhost:8080/invoices
+                localhost:8080/invoices/{id}
+                localhost:8080/invoices/user
+                localhost:8080/invoices/{id}/getpdfinvoice
+                localhost:8080/invoices/{id} * POST
+                localhost:8080/invoices/{id}/payed
+                localhost:8080/invoices/{id}/generateInvoicePdf
+                localhost:8080/invoices/{id}/sendinvoice
+                localhost:8080/invoices/{id}
+
+                ----------Maintenances!----------
+                localhost:8080/maintenances
+                localhost:8080/maintenances/{id}
+                localhost:8080/maintenances/user
+                localhost:8080/maintenances/{id} *POST\s
+                localhost:8080/maintenances/{id}/mechanicdone
+                localhost:8080/maintenances/{id}/approvaluser
+                localhost:8080/maintenances/{id} *DELETE\s
+
+                ----------Repairs!----------
+                localhost:8080/repairs/{licenseplate}
+                localhost:8080/repairs/{carpartname}/{car-id}
+                localhost:8080/repairs/{car-id}/setrepaired
+                localhost:8080/repairs/{repair-id}
+
+                ----------Users!----------
+                localhost:8080/users
+                localhost:8080/users/{username}
+                localhost:8080/users/{username}/authorities
+                localhost:8080/users *POST
+                localhost:8080/users/{username}/authorities
+                localhost:8080/users/{username} *PUT
+                localhost:8080/users/{username} *DELETE
+                localhost:8080/users/{username}/authorities/{USER_ROLE}
+
+                ----------Carparts!----------
+                localhost:8080/carparts/{licenseplate}
+                localhost:8080/carparts/{licenseplate}/inspection/{CARPART}
+
+                ----------Carpapers!----------
+                localhost:8080/carpapers/getpdfcarpapers/{licenseplate}
+                localhost:8080/carpapers/upload/{username}
+
+                ----------Auth!----------
+                localhost:8080/authenticated
+                localhost:8080/authenticate""";
+
+        return ResponseEntity.ok().body(info);
+    }
+
 }
