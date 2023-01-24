@@ -54,6 +54,7 @@ class RepairServiceTest {
     Repair repair1;
     Repair repair2;
     Repair repair3;
+    Repair repair4;
     RepairInputDto repairDto1;
     RepairInputDto repairDto2;
     Maintenance maintenance1;
@@ -78,6 +79,7 @@ class RepairServiceTest {
         brakes.setCar(car1);
         repair2 = new Repair(2L, 100.00, "worn out brakes",false,brakes, maintenance2);
         repair3 = new Repair(3L, 100.00, "worn out brakes",false,brakes, maintenance1);
+        repair4 = new Repair(4L, 100.00, "worn out brakes",false,null, null);
         repairDto1 = new RepairInputDto(100.00,"worn out brakes",tires,maintenance1,true);
         repairDto2 = new RepairInputDto(100.00,"worn out brakes",brakes, maintenance2,true);
 
@@ -97,6 +99,7 @@ class RepairServiceTest {
         ArrayList<Repair> repairs = new ArrayList<>();
         repairs.add(repair1);
         repairs.add(repair2);
+        repairs.add(repair3);
         maintenance2.setRepairs(repairs);
 
     }
@@ -115,9 +118,9 @@ class RepairServiceTest {
     }
     @Test
     void getAllRepairsFromOneCarThrowsExceptionForRepairTest() {
-        assertThrows(RecordNotFoundException.class, () -> repairService.getAllRepairsFromOneCar("33-TTB-3"));
+            assertThrows(RecordNotFoundException.class, () -> repairService.getAllRepairsFromOneCar("33-TTB-3"));
 
-        when(carRepository.findBylicenseplate(any())).thenReturn(car2);
+            when(carRepository.findBylicenseplate(any())).thenReturn(car2);
         assertThrows(RecordNotFoundException.class, () -> repairService.getAllRepairsFromOneCar("33-TTB-4"));
     }
 
