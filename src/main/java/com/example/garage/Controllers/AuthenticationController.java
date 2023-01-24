@@ -61,7 +61,8 @@ public class AuthenticationController {
     @GetMapping( "/info")
     public ResponseEntity<String> info() {
         String info = """
-                Here follow all the possible commands for this application
+                Here follow all the possible commands for this application:
+                
                 ----------Cars!----------
                 localhost:8080/cars
                 localhost:8080/cars/{id}
@@ -120,7 +121,11 @@ public class AuthenticationController {
 
                 ----------Auth!----------
                 localhost:8080/authenticated
-                localhost:8080/authenticate""";
+                localhost:8080/authenticate
+                
+                {} = fill in with certain code.
+                * = this is double methode however a differant type of request.
+                """;
 
         return ResponseEntity.ok().body(info);
     }

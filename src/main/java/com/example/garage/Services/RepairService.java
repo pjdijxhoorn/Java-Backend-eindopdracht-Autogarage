@@ -56,9 +56,9 @@ public class RepairService {
         }
     }
 
-    public long createRepair(RepairInputDto repairInputDto, String carpart, long carservice_id) {
-        Maintenance maintenance = maintenanceRepository.findById(carservice_id)
-                .orElseThrow(() -> new RecordNotFoundException("No carcarservice found with id: " + carservice_id));
+    public long createRepair(RepairInputDto repairInputDto, String carpart, long maintenance_id) {
+        Maintenance maintenance = maintenanceRepository.findById(maintenance_id)
+                .orElseThrow(() -> new RecordNotFoundException("No maintenance found with id: " + maintenance_id));
         CarPart carpart1 = new CarPart();
         // Next lines are to get the right carpart by name.
         // This is easier for the mechanic then id for every car has the same basic components.
@@ -113,18 +113,11 @@ public class RepairService {
 
     private Repair transferDtoToRepair(RepairInputDto repairInputDto) {
         Repair repair = new Repair();
-
         repair.setRepairCost(repairInputDto.getRepairCost());
         repair.setNotes(repairInputDto.getNotes());
         if (repair.getMaintenance() != null) {
-            repair.setMaintenance(repairInputDto.getMaintenance());
-        }
+            repair.setMaintenance(repairInputDto.getMaintenance());}
         if (repair.getCarpart() != null) {
-            repair.setCarpart(repairInputDto.getCarpart());
-        }
-
+            repair.setCarpart(repairInputDto.getCarpart());}
         return repair;
-    }
-
-
-}
+    }}
