@@ -179,5 +179,14 @@ class RepairServiceTest {
         verify(repairRepository).delete(repair1);
 
     }
+
+    @Test
+    void transferDtoToRepair(){
+        Repair repairreturn = repairService.transferDtoToRepair(repairDto1);
+        assertEquals(repairDto1.getRepairCost(), repairreturn.getRepairCost());
+        assertEquals(repairDto1.getNotes(), repairreturn.getNotes());
+        assertEquals(repairDto1.getMaintenance(), repairreturn.getMaintenance());
+        assertEquals(repairDto1.getCarpart(), repairreturn.getCarpart());
+    }
 }
 

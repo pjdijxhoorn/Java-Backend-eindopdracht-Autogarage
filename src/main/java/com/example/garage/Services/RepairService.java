@@ -111,13 +111,13 @@ public class RepairService {
         return repairDto;
     }
 
-    private Repair transferDtoToRepair(RepairInputDto repairInputDto) {
+    public Repair transferDtoToRepair(RepairInputDto repairInputDto) {
         Repair repair = new Repair();
         repair.setRepairCost(repairInputDto.getRepairCost());
         repair.setNotes(repairInputDto.getNotes());
-        if (repair.getMaintenance() != null) {
+        if (repair.getMaintenance() == null) {
             repair.setMaintenance(repairInputDto.getMaintenance());}
-        if (repair.getCarpart() != null) {
+        if (repair.getCarpart() == null) {
             repair.setCarpart(repairInputDto.getCarpart());}
         return repair;
     }}
