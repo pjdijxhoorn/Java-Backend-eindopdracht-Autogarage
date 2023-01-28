@@ -57,11 +57,11 @@ public class InvoiceService {
     }
 
     public InvoiceOutputDto getOneInvoiceByID(long id) {
-        Optional<Invoice> invoice = invoiceRepository.findById(id);
-        if (invoice.isEmpty()) {
+        Optional<Invoice> optioneelinvoice = invoiceRepository.findById(id);
+        if (optioneelinvoice.isEmpty()) {
             throw new RecordNotFoundException("no invoice found with id: " + id);
         } else {
-            Invoice invoice1 = invoice.get();
+            Invoice invoice1 = optioneelinvoice.get();
             return transferInvoiceToDto(invoice1);
         }
     }

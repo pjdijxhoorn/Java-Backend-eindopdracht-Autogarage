@@ -177,3 +177,4 @@ UPDATE cars SET carpaper_licenseplate = '00-OPA-4' WHERE id = 109;
 
 
 --INSERT INTO invoices(id, payed, pdfinvoice, repair_date, totalcost, totalrepaircost, car_id, car_service_id, user_username) VALUES (100, false, '63996' ,'2023-01-09', 399.3, 300, 100, 100, 'User1!')
+

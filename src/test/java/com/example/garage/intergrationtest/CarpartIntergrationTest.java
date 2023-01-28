@@ -4,6 +4,7 @@ import com.example.garage.Dtos.Input.CarPartInputDto;
 import com.example.garage.Models.Car;
 import com.example.garage.Models.CarPart;
 import com.example.garage.Models.CarpartName;
+import com.example.garage.Repositories.CarRepository;
 import com.example.garage.Repositories.CarpartRepository;
 import com.example.garage.Services.CarpartService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,6 +36,16 @@ class CarpartIntergrationTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    CarRepository carRepository;
+
+    @Autowired
+    CarpartRepository carpartRepository;
+
+    @Autowired
+    CarpartService carpartService;
+
+
     Car car1;
     CarPart tires;
     CarPart brakes;
@@ -42,9 +53,10 @@ class CarpartIntergrationTest {
 
     @BeforeEach
     void setUp() {
-        car1 = new Car(1L,"33-TTB-3","TOYOTA",CHECKED_IN,null,null,null,null,null);
+        carRepository.deleteAll();
+        carpartRepository.deleteAll();
+        car1 = new Car(1L,"66-LOL-6","TOYOTA",CHECKED_IN,null,null,null,null,null);
         tires = new CarPart(1L, CarpartName.TIRES,"3mm profile",true,car1,null);
-        brakes = new CarPart(2L, CarpartName.BRAKES,"3mm profile",true,car1,null);
 
         ArrayList<CarPart> carparts = new ArrayList<>();
         carparts.add(tires);
@@ -54,7 +66,7 @@ class CarpartIntergrationTest {
         carPartInputDto1 = new CarPartInputDto();
         carPartInputDto1.setChecked(false);
         carPartInputDto1.setState("no profile you fool");
-
+        carRepository.save(car1);
     }
 
     @Test

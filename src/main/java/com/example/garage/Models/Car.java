@@ -29,16 +29,16 @@ public class Car {
     private Carstatus carstatus;
 
     //relations.........................................
-    @OneToMany(mappedBy = "car")
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CarPart> carparts;
 
-    @OneToMany(mappedBy = "car")
+    @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Maintenance> maintenances;
 
-    @OneToMany(mappedBy = "car")
+    @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Invoice> invoices;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private CarPaper carpaper;
 
     @ManyToOne
