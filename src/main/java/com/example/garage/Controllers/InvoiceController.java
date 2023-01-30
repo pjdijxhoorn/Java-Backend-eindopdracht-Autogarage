@@ -51,9 +51,9 @@ public class InvoiceController {
         return ResponseEntity.ok(invoiceService.sendInvoicePdf(id));
     }
 
-    @PostMapping("{service_id}")
-    public ResponseEntity<String> createInvoice(@PathVariable long service_id) {
-        long createdId = invoiceService.createInvoice(service_id);
+    @PostMapping("{maintenance_id}")
+    public ResponseEntity<String> createInvoice(@PathVariable long maintenance_id) {
+        long createdId = invoiceService.createInvoice(maintenance_id);
         URI uri = URI.create(
                 ServletUriComponentsBuilder
                         .fromCurrentContextPath()
