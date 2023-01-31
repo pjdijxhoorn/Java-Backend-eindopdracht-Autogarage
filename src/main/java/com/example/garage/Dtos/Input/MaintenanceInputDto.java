@@ -6,11 +6,11 @@ import com.example.garage.Models.Repair;
 
 import java.util.List;
 
-public class CarServiceInputDto {
+public class MaintenanceInputDto {
     //variables.........................................
     private boolean repair_approved;
     private boolean custumor_response;
-    private  boolean mechanic_done;
+    private boolean mechanic_done;
     private boolean totalrepaircost;
     //relations.........................................
 

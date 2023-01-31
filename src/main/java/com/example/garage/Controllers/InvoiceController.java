@@ -22,7 +22,7 @@ public class InvoiceController {
     }
 
     @GetMapping("")
-    public ResponseEntity<Iterable<InvoiceOutputDto>> getAllInvoices(){
+    public ResponseEntity<Iterable<InvoiceOutputDto>> getAllInvoices() {
         return ResponseEntity.ok(invoiceService.getAllInvoices());
     }
 
@@ -32,7 +32,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<Iterable<InvoiceOutputDto>> getAllInvoicesfromUser(){
+    public ResponseEntity<Iterable<InvoiceOutputDto>> getAllInvoicesfromUser() {
         return ResponseEntity.ok(invoiceService.getAllInvoicesfromUser());
     }
 
@@ -42,7 +42,7 @@ public class InvoiceController {
     }
 
     @PutMapping("{id}/generateInvoicePdf")
-    public ResponseEntity<String> generateInvoicePdf(@PathVariable long id) throws IOException{
+    public ResponseEntity<String> generateInvoicePdf(@PathVariable long id) throws IOException {
         return ResponseEntity.ok(invoiceService.generateInvoicePdf(id));
     }
 
@@ -51,24 +51,20 @@ public class InvoiceController {
         return ResponseEntity.ok(invoiceService.sendInvoicePdf(id));
     }
 
-
-
-    @PostMapping("{service_id}")
-    public ResponseEntity<String> createInvoice(@PathVariable long service_id){
-            long createdId = invoiceService.createInvoice(service_id);
-            URI uri = URI.create(
-                    ServletUriComponentsBuilder
-                            .fromCurrentContextPath()
-                            .path("/Invoice/" + createdId).toUriString());
-            return ResponseEntity.created(uri).body("Invoice created");
-        }
-
-
-    @PutMapping("{id}/payed")
-    public ResponseEntity<InvoiceOutputDto> updatePayedInvoice(@PathVariable long id, @RequestBody InvoiceOutputDto invoiceOutputDto){
-        return ResponseEntity.ok(invoiceService.updatePayedInvoice(id, invoiceOutputDto));
+    @PostMapping("{maintenance_id}")
+    public ResponseEntity<String> createInvoice(@PathVariable long maintenance_id) {
+        long createdId = invoiceService.createInvoice(maintenance_id);
+        URI uri = URI.create(
+                ServletUriComponentsBuilder
+                        .fromCurrentContextPath()
+                        .path("/Invoice/" + createdId).toUriString());
+        return ResponseEntity.created(uri).body("Invoice created");
     }
 
+    @PutMapping("{id}/payed")
+    public ResponseEntity<InvoiceOutputDto> updatePayedInvoice(@PathVariable long id, @RequestBody InvoiceOutputDto invoiceOutputDto) {
+        return ResponseEntity.ok(invoiceService.updatePayedInvoice(id, invoiceOutputDto));
+    }
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteInvoice(@PathVariable long id) {
         return ResponseEntity.ok(invoiceService.deleteInvoice(id));

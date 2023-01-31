@@ -15,8 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="carservices")
-public class CarService {
+@Table(name = "maintenance")
+public class Maintenance {
     //variables.........................................
     @Id
     @GeneratedValue(generator = "ID_GENERATOR")
@@ -26,27 +26,30 @@ public class CarService {
     @Value("${some.key:false}")
     private boolean custumor_response;
     @Value("${some.key:false}")
-    private  boolean mechanic_done;
+    private boolean mechanic_done;
     private double totalrepaircost;
     //relations.........................................
-    @OneToMany(mappedBy = "carservice")
+    @OneToMany(mappedBy = "maintenance")
     List<Repair> repairs;
 
     @ManyToOne
     @JsonIgnore
     private Car car;
 
-    @OneToOne(mappedBy = "carService")
+    @OneToOne(mappedBy = "maintenance")
+    @JsonIgnore
     private Invoice invoice;
 
-    public double calculateRepairCost(){
+    public double calculateRepairCost() {
         double total = 0.0;
         //total repair price is the combined repair items
-        if (repairs != null){
-            for (Repair repair: repairs){
-                total += repair.getRepairCost();}
-        }else{
-            total= 0.0;}
+        if (repairs != null) {
+            for (Repair repair : repairs) {
+                total += repair.getRepairCost();
+            }
+        } else {
+            total = 0.0;
+        }
         return total;
     }
 }

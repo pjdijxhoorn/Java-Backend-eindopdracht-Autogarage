@@ -1,13 +1,13 @@
 package com.example.garage.Services;
 
 
-import com.example.garage.Dtos.Output.CarOutputDto;
 import com.example.garage.Exceptions.BadRequestException;
 import com.example.garage.Exceptions.RecordNotFoundException;
 import com.example.garage.Models.Car;
 import com.example.garage.Models.CarPaper;
 import com.example.garage.Models.User;
 import com.example.garage.Repositories.CarPaperRepository;
+import com.example.garage.Repositories.CarRepository;
 import com.example.garage.Repositories.UserRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,25 +15,32 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import static com.example.garage.Utilities.licenseplateValidator.validateLicensePlate;
 
 import java.io.IOException;
 import java.util.Optional;
+
+import static com.example.garage.Utilities.licenseplateValidator.validateLicensePlate;
 
 @Service
 public class CarpaperService {
 
     private final CarPaperRepository carPaperRepository;
     private final UserRepository userRepository;
+    private final CarRepository carRepository;
 
-    public CarpaperService(CarPaperRepository carPaperRepository, UserRepository userRepository) {
+    public CarpaperService(CarPaperRepository carPaperRepository, UserRepository userRepository, CarRepository carRepository) {
         this.carPaperRepository = carPaperRepository;
         this.userRepository = userRepository;
+        this.carRepository = carRepository;
     }
-    public ResponseEntity<byte[]> getCarPapersById(long id) {
+
+    public ResponseEntity<byte[]> getCarPapersById(String id) {
         CarPaper carPaper = carPaperRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("No car papers found with id: " + id));
         byte[] carPapers = carPaper.getCarPapers();
+        if (carPapers == null){
+            throw new RecordNotFoundException("there is no carpaper pdf yet.");
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("attachment", "carpapers" + id + ".pdf");
@@ -47,11 +54,16 @@ public class CarpaperService {
         if (!validateLicensePlate(licenseplate))
             throw new RecordNotFoundException("This is not a valid Dutch license plate");
         CarPaper testcarPaper = carPaperRepository.findBylicenseplate(licenseplate);
-        if(testcarPaper != null){
+        if (testcarPaper != null) {
             throw new BadRequestException("this licenseplate is already registerd.");
-        }
-        else {
+        } else {
             CarPaper carPaper = new CarPaper();
+
+            Optional<Car> optionalcar = Optional.ofNullable(carRepository.findBylicenseplate(licenseplate));
+            if (optionalcar.isPresent()){
+                Car car = optionalcar.get();
+                carPaper.setCar(car);
+            }
             carPaper.setLicenseplate(licenseplate);
             carPaper.setUser(user);
             carPaper.carPapers = file.getBytes();

@@ -16,29 +16,29 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="cars")
+@Table(name = "cars")
 public class Car {
     //variables.........................................
     @Id
     @GeneratedValue(generator = "ID_GENERATOR")
     private Long id;
-    @NotNull(message = "This isnt allowed to be Null " )
+    @NotNull(message = "This isnt allowed to be Null ")
     private String licenseplate;
     private String brand;
     @Enumerated(EnumType.STRING)
     private Carstatus carstatus;
 
     //relations.........................................
-    @OneToMany(mappedBy = "car")
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CarPart> carparts;
 
-    @OneToMany(mappedBy = "car")
-    private List<CarService> carServices;
+    @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Maintenance> maintenances;
 
-    @OneToMany(mappedBy = "car")
+    @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Invoice> invoices;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private CarPaper carpaper;
 
     @ManyToOne

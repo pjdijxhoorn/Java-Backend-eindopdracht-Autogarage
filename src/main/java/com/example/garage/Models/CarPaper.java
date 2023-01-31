@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -14,18 +15,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="carpapers")
+@Table(name = "carpapers")
 public class CarPaper {
 
     //variables.........................................
     @Id
-    @GeneratedValue(generator = "ID_GENERATOR")
-    private Long id;
-
     private String licenseplate;
 
     @Lob
-    public byte [] carPapers;
+    @Type(type = "org.hibernate.type.BinaryType")
+    public byte[] carPapers;
 
     //relations.........................................
     @ManyToOne
@@ -34,6 +33,5 @@ public class CarPaper {
 
     @OneToOne(mappedBy = "carpaper")
     private Car car;
-
-
 }
+

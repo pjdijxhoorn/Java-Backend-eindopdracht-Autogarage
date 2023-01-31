@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name="invoices")
+@Table(name = "invoices")
 public class Invoice {
     //variables.........................................
     @Id
@@ -25,6 +26,7 @@ public class Invoice {
     private LocalDate repairDate;
 
     @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
     public byte[] pdfinvoice;
 
     public static final double btw = 21.0;
@@ -37,32 +39,33 @@ public class Invoice {
     private User user;
 
     @OneToOne
-    private CarService carService;
+    private Maintenance maintenance;
 
     @ManyToOne
     @JsonIgnore
     private Car car;
 
 
-    public double calculateRepairCost(){
+    public double calculateRepairCost() {
         double total = 0.0;
         // the repair price can only be calculated if the customer approved repairs
-        if (carService.isRepair_approved()){
+        if (maintenance.isRepair_approved()) {
             //total repair price is the combined repair items
-            for (Repair repair: carService.repairs){
-                if (repair.isRepair_done()){
-                total+=repair.getRepairCost();}
+            for (Repair repair : maintenance.repairs) {
+                if (repair.isRepair_done()) {
+                    total += repair.getRepairCost();
+                }
             }
         }
         return total;
-   }
+    }
 
-   public double calculateTotalCost(){
+    public double calculateTotalCost() {
         double total = 0.0;
         total += APKCHECK;
         total += totalrepaircost;
         total = total + ((total / 100) * btw);
-        total = Math.round(total*100.0)/100.0;
-       return  total;
-   }
+        total = Math.round(total * 100.0) / 100.0;
+        return total;
+    }
 }

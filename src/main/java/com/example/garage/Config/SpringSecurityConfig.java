@@ -58,66 +58,65 @@ public class SpringSecurityConfig {
                 // Wanneer je deze uncomments, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
 //                .antMatchers("/**").permitAll()
                 //----------------------------------------Endpoints Car--------------------------------------
-                .antMatchers(HttpMethod.GET, "/cars").permitAll()
-                .antMatchers(HttpMethod.GET, "/cars/{id}").permitAll()
-                .antMatchers(HttpMethod.GET, "/cars/licenseplate/{licenseplate}").permitAll()
+                .antMatchers(HttpMethod.GET, "/cars").hasAnyRole("DESK","MECHANIC","ADMIN")
+                .antMatchers(HttpMethod.GET, "/cars/{id}").hasAnyRole("DESK","MECHANIC","ADMIN")
+                .antMatchers(HttpMethod.GET, "/cars/licenseplate/{licenseplate}").hasAnyRole("DESK","MECHANIC","ADMIN")
                 .antMatchers(HttpMethod.GET, "/cars/user").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/cars/user/status").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/cars").hasRole("DESK")
+                .antMatchers(HttpMethod.POST, "/cars").hasAnyRole("DESK","ADMIN")
+                .antMatchers(HttpMethod.PUT, "/cars/statusdesk/{carstatus}/{licenseplate}").hasAnyRole("DESK","ADMIN")
+                .antMatchers(HttpMethod.PUT, "/cars/statusmechanic/{carstatus}/{licenseplate}").hasAnyRole("MECHANIC","ADMIN")
                 .antMatchers(HttpMethod.PUT, "/cars/{id}").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/cars/{id}/statusdesk").hasRole("DESK")
-                .antMatchers(HttpMethod.PUT, "/cars/{id}/statusmechanic").hasRole("MECHANIC")
-                .antMatchers(HttpMethod.DELETE,"/cars/{id}").permitAll()
+                .antMatchers(HttpMethod.DELETE,"/cars/{id}").hasAnyRole("DESK","ADMIN")
 
                 //----------------------------------------Endpoints Invoice--------------------------------------
-                .antMatchers(HttpMethod.GET, "/invoices").permitAll()
-                .antMatchers(HttpMethod.GET, "/invoices/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/invoices").hasAnyRole("DESK","ADMIN")
+                .antMatchers(HttpMethod.GET, "/invoices/{id}").hasAnyRole("DESK","ADMIN")
                 .antMatchers(HttpMethod.GET, "/invoices/user").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/invoices/{id}/getpdfinvoice").permitAll()
-                .antMatchers(HttpMethod.POST, "/invoices/{service_id}").permitAll()
-                .antMatchers(HttpMethod.PUT, "/invoices/{id}/payed").hasRole("DESK")
-                .antMatchers(HttpMethod.PUT, "/invoices/{id}/generateInvoicePdf").permitAll()
-                .antMatchers(HttpMethod.PUT, "/invoices/{id}/sendinvoice").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/invoices/{id}").permitAll()
-
+                .antMatchers(HttpMethod.GET, "/invoices/{id}/getpdfinvoice").hasAnyRole("DESK","ADMIN")
+                .antMatchers(HttpMethod.POST, "/invoices/{service_id}").hasAnyRole("DESK","ADMIN")
+                .antMatchers(HttpMethod.PUT, "/invoices/{id}/payed").hasAnyRole("DESK","ADMIN")
+                .antMatchers(HttpMethod.PUT, "/invoices/{id}/generateInvoicePdf").hasAnyRole("DESK","ADMIN")
+                .antMatchers(HttpMethod.PUT, "/invoices/{id}/sendinvoice").hasAnyRole("DESK","ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/invoices/{id}").hasRole("ADMIN")
 
                 //----------------------------------------Endpoints Service--------------------------------------
-                .antMatchers(HttpMethod.GET, "/services").permitAll()
-                .antMatchers(HttpMethod.GET, "/services/{id}").permitAll()
-                .antMatchers(HttpMethod.GET, "/services/user").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/services/{car_id}").permitAll()
-                .antMatchers(HttpMethod.PUT, "/services/{id}/mechanicdone").permitAll()
-                .antMatchers(HttpMethod.PUT, "/services/{id}/approvaluser").hasRole("USER")
-                .antMatchers(HttpMethod.DELETE, "/services/{id}").permitAll()
-
+                .antMatchers(HttpMethod.GET, "/maintenances").hasAnyRole("DESK","MECHANIC","ADMIN")
+                .antMatchers(HttpMethod.GET, "/maintenances/{id}").hasAnyRole("DESK","MECHANIC","ADMIN")
+                .antMatchers(HttpMethod.GET, "/maintenances/user").hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/maintenances/{car_id}").hasAnyRole("DESK","ADMIN")
+                .antMatchers(HttpMethod.PUT, "/maintenances/{id}/mechanicdone").hasAnyRole("MECHANIC","ADMIN")
+                .antMatchers(HttpMethod.PUT, "/maintenances/{id}/approvaluser").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/maintenances/{id}").hasRole("ADMIN")
 
                 //----------------------------------------Endpoints Repair--------------------------------------
-                .antMatchers(HttpMethod.GET, "/repairs/{id}").permitAll()
-                .antMatchers(HttpMethod.POST, "/repairs/{carpart_id}/{service_id}").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/repairs/{id}/setrepaired").hasRole("MECHANIC")
-                .antMatchers(HttpMethod.DELETE, "/repairs/{id}").permitAll()
-
+                .antMatchers(HttpMethod.GET, "/repairs/{licenseplate}").hasAnyRole("MECHANIC","DESK","ADMIN")
+                .antMatchers(HttpMethod.POST, "/repairs/{carpart_id}/{service_id}").hasAnyRole("MECHANIC","ADMIN")
+                .antMatchers(HttpMethod.PUT, "/repairs/{id}/setrepaired").hasAnyRole("MECHANIC","ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/repairs/{id}").hasAnyRole("MECHANIC","ADMIN")
 
                 //----------------------------------------Endpoints User--------------------------------------
-                .antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET,"/users/{username}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET,"/users").hasAnyRole("DESK","ADMIN")
+                .antMatchers(HttpMethod.GET,"/users/{username}").hasAnyRole("DESK","ADMIN")
                 .antMatchers(HttpMethod.GET,"/users/{username}/authorities").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST,"/users").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST,"/users/{username}/authorities").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT,"/users/{username}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT,"/users/{username}").hasAnyRole("DESK","ADMIN")
                 .antMatchers(HttpMethod.DELETE,"/users/{username}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE,"/users/{username}/authorities/{authority}").hasRole("ADMIN")
 
-                //----------------------------------------Endpoints Repair--------------------------------------
-                .antMatchers(HttpMethod.GET, "/carparts/{car_id}").permitAll()
-                .antMatchers(HttpMethod.PUT, "/carparts/{car_id}/inspection/{carpart}").permitAll()
+                //----------------------------------------Endpoints Carparts--------------------------------------
+                .antMatchers(HttpMethod.GET, "/carparts/{licenseplate}").hasAnyRole("MECHANIC","ADMIN")
+                .antMatchers(HttpMethod.PUT, "/carparts/{licenseplate}/inspection/{carpart}").hasAnyRole("MECHANIC","ADMIN")
 
-                //----------------------------------------Endpoints Repair--------------------------------------
-                .antMatchers(HttpMethod.GET, "/carpapers/upload/{user_id}").permitAll()
+                //----------------------------------------Endpoints Carpapers--------------------------------------
+                .antMatchers(HttpMethod.GET, "/carpapers/getpdfcarpapers/{licenseplate}").hasAnyRole("DESK","ADMIN")
+                .antMatchers(HttpMethod.POST, "/carpapers/upload/{user_id}").hasAnyRole("MECHANIC","ADMIN","DESK","USER")
 
                 //----------------------------------------Endpoints Auth--------------------------------------
                 .antMatchers(HttpMethod.GET,"/authenticated").authenticated()
                 .antMatchers(HttpMethod.POST,"/authenticate").permitAll()
+                .antMatchers(HttpMethod.POST,"/info").permitAll()
                 //.antMatchers("/cimodules", "/remotecontrollers", "/televisions", "/wallbrackets").hasAnyRole("ADMIN", "USER")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

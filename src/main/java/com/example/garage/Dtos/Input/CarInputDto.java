@@ -1,5 +1,6 @@
 package com.example.garage.Dtos.Input;
 
+import com.example.garage.Models.CarPaper;
 import com.example.garage.Models.CarPart;
 import com.example.garage.Models.Carstatus;
 import com.example.garage.Models.User;
@@ -19,6 +20,7 @@ public class CarInputDto {
     @Enumerated(EnumType.STRING)
     private Carstatus carstatus;
     List<CarPart> carparts;
+    private CarPaper carpaper;
     private User user;
 
 }
