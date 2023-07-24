@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserDto {
 
+    @NotBlank
     public String username;
     public String password;
     public Boolean enabled;
